@@ -45,10 +45,9 @@ Un **diagramma di flusso** (flow chart o flowchart) è una rappresentazione graf
 - Ogni flow chart ha esattamente UN inizio e almeno UNA fine
 
 **2. PROCESSO (Rettangolo)**
-```
-    ┌─────────────────┐
-    │ AREA = BASE × H │
-    └─────────────────┘
+```mermaid
+  flowchart TD;
+      A[AREA = BASE × H]
 ```
 - Rappresenta un'**operazione** o **istruzione**
 - Calcoli, assegnazioni, operazioni matematiche
