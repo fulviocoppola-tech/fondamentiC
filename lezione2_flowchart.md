@@ -54,27 +54,19 @@ Un **diagramma di flusso** (flow chart o flowchart) è una rappresentazione graf
 - Esempi: `X = 5`, `SOMMA = A + B`, `CONTATORE = CONTATORE + 1`
 
 **3. INPUT/OUTPUT (Parallelogramma)**
-```
-    ╱────────────────╲
-   ╱  Leggi NUMERO    ╲
-  ╱____________________╲
-  
-    ╱────────────────╲
-   ╱  Scrivi TOTALE   ╲
-  ╱____________________╲
+```mermaid
+  flowchart TD;
+      A[/Leggi NUMERO/]
+      B[/Scrivi TOTALE/]
 ```
 - Rappresenta **input** (lettura di dati)
 - Rappresenta **output** (scrittura/stampa di risultati)
 - Esempi: `Leggi N`, `Scrivi "Risultato"`, `Stampa MEDIA`
 
 **4. DECISIONE (Rombo)**
-```
-        ╱╲
-       ╱  ╲
-      ╱ N>0╲
-     ╱  ?   ╲
-    ╱________╲
-   SI        NO
+```mermaid
+  flowchart TD;
+      A{N>0?}
 ```
 - Rappresenta una **condizione** o **test**
 - Ha due uscite: VERO (SI/TRUE) e FALSO (NO/FALSE)
@@ -94,14 +86,16 @@ Un **diagramma di flusso** (flow chart o flowchart) è una rappresentazione graf
 - Di solito vanno dall'alto verso il basso e da sinistra a destra
 
 **6. CONNETTORI (Cerchi)**
+
+Connettore in-page
+```mermaid
+  flowchart TD;
+      A((A)) 
 ```
-    ┌───┐
-    │ A │  (Connettore in-page)
-    └───┘
-    
-    ┌───┐
-    │ 1 │  (Connettore off-page)
-    └───┘
+Connettore off-page
+```mermaid
+  flowchart TD;
+      B((1)) 
 ```
 - Usati per **collegare** parti del flow chart quando le frecce si incrocerebbero
 - Connettori con la stessa etichetta sono collegati
@@ -110,21 +104,12 @@ Un **diagramma di flusso** (flow chart o flowchart) è una rappresentazione graf
 #### Simboli Aggiuntivi (Meno Comuni)
 
 **7. PREDEFINITO (Rettangolo con barre laterali)**
-```
-    ┃─────────────┃
-    ┃  Funzione   ┃
-    ┃─────────────┃
+```mermaid
+  flowchart TD;
+      B[[Funzione]] 
 ```
 - Rappresenta una **funzione** o **procedura** predefinita
 
-**8. PREPARAZIONE (Esagono)**
-```
-      ______
-     /      \
-    |  FOR  |
-     \______/
-```
-- Usato per indicare **cicli** con contatore (FOR)
 
 ---
 
@@ -143,34 +128,30 @@ Un **diagramma di flusso** (flow chart o flowchart) è una rappresentazione graf
 
 #### Esempio Completo: Calcolare la Media di Due Numeri
 
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-        ╱────┴────╲
-       ╱  Leggi A  ╲
-      ╱______________╲
-             │
-        ╱────┴────╲
-       ╱  Leggi B  ╲
-      ╱______________╲
-             │
-      ┌──────┴──────┐
-      │ SOMMA = A+B │
-      └──────┬──────┘
-             │
-      ┌──────┴──────┐
-      │ MEDIA=SOMMA/2│
-      └──────┬──────┘
-             │
-        ╱────┴────╲
-       ╱Scrivi MEDIA╲
-      ╱______________╲
-             │
-        ┌────┴────┐
-        │  FINE   │
-        └─────────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Input1[/Leggi A/]
+    Input2[/Leggi B/]
+    Process1[SOMMA = A + B]
+    Process2[MEDIA = SOMMA / 2]
+    Output[/Scrivi MEDIA/]
+    End([FINE])
+    
+    Start --> Input1
+    Input1 --> Input2
+    Input2 --> Process1
+    Process1 --> Process2
+    Process2 --> Output
+    Output --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input1 fill:#87CEEB
+    style Input2 fill:#87CEEB
+    style Output fill:#87CEEB
+    style Process1 fill:#FFE4B5
+    style Process2 fill:#FFE4B5
 ```
 
 ---
