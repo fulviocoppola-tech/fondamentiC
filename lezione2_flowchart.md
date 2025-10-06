@@ -37,10 +37,9 @@ Un **diagramma di flusso** (flow chart o flowchart) è una rappresentazione graf
 #### Simboli Fondamentali
 
 **1. TERMINATORE (Ovale/Ellisse)**
-```
-mermaid
+```mermaid
   flowchart TD;
-      ([INIZIO / FINE])
+      A([INIZIO / FINE])
 ```
 - Indica l'**inizio** o la **fine** di un algoritmo
 - Ogni flow chart ha esattamente UN inizio e almeno UNA fine
