@@ -170,42 +170,36 @@ I costrutti fondamentali sono i **mattoni** con cui si costruisce qualsiasi algo
 - Non ci sono scelte o ripetizioni
 
 **Flow Chart - Esempio: Scambio di due variabili**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-        ╱────┴────╲
-       ╱  Leggi A  ╲
-      ╱______________╲
-             │
-        ╱────┴────╲
-       ╱  Leggi B  ╲
-      ╱______________╲
-             │
-      ┌──────┴──────┐
-      │   TEMP = A  │
-      └──────┬──────┘
-             │
-      ┌──────┴──────┐
-      │   A = B     │
-      └──────┬──────┘
-             │
-      ┌──────┴──────┐
-      │   B = TEMP  │
-      └──────┬──────┘
-             │
-        ╱────┴────╲
-       ╱ Scrivi A  ╲
-      ╱______________╲
-             │
-        ╱────┴────╲
-       ╱ Scrivi B  ╲
-      ╱______________╲
-             │
-        ┌────┴────┐
-        │  FINE   │
-        └─────────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Input1[/Leggi A/]
+    Input2[/Leggi B/]
+    Process1["TEMP = A<br/>(salva A)"]
+    Process2["A = B<br/>(sovrascrivi A)"]
+    Process3["B = TEMP<br/>(recupera vecchio A)"]
+    Output1[/Scrivi A/]
+    Output2[/Scrivi B/]
+    End([FINE])
+    
+    Start --> Input1
+    Input1 --> Input2
+    Input2 --> Process1
+    Process1 --> Process2
+    Process2 --> Process3
+    Process3 --> Output1
+    Output1 --> Output2
+    Output2 --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input1 fill:#87CEEB
+    style Input2 fill:#87CEEB
+    style Output1 fill:#87CEEB
+    style Output2 fill:#87CEEB
+    style Process1 fill:#FFE4B5
+    style Process2 fill:#FFE4B5
+    style Process3 fill:#FFE4B5
 ```
 
 #### 2. SELEZIONE (o Alternativa)
@@ -215,55 +209,50 @@ I costrutti fondamentali sono i **mattoni** con cui si costruisce qualsiasi algo
 **Tipi di Selezione:**
 
 **a) Selezione Semplice (IF)**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-        ╱────┴────╲
-       ╱  Leggi N  ╲
-      ╱______________╲
-             │
-          ╱──┴──╲
-         ╱ N > 0 ╲
-        ╱____?____╲
-       SI│        │NO
-         │        └──────┐
-      ┌──┴────┐         │
-      │Scrivi │         │
-      │"Positivo"│      │
-      └──┬────┘         │
-         │              │
-         └──────┬───────┘
-             ┌──┴──┐
-             │FINE │
-             └─────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Input[/Leggi N/]
+    Decision{N > 0?}
+    Output[/Scrivi 'Positivo'/]
+    End([FINE])
+    
+    Start --> Input
+    Input --> Decision
+    Decision -->|SI| Output
+    Decision -->|NO| End
+    Output --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input fill:#87CEEB
+    style Output fill:#87CEEB
+    style Decision fill:#FFEB9C
 ```
 
 **b) Selezione Binaria (IF-ELSE)**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-        ╱────┴────╲
-       ╱  Leggi N  ╲
-      ╱______________╲
-             │
-          ╱──┴──╲
-         ╱ N % 2 ╲
-        ╱  = 0?  ╲
-       SI│        │NO
-         │        │
-      ┌──┴────┐ ┌┴──────┐
-      │Scrivi │ │Scrivi │
-      │"Pari" │ │"Dispari"│
-      └──┬────┘ └┬──────┘
-         │       │
-         └───┬───┘
-          ┌──┴──┐
-          │FINE │
-          └─────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Input[/Leggi N/]
+    Decision{"N % 2 = 0?"}
+    OutputPari[/Scrivi 'Pari'/]
+    OutputDispari[/Scrivi 'Dispari'/]
+    End([FINE])
+    
+    Start --> Input
+    Input --> Decision
+    Decision -->|SI| OutputPari
+    Decision -->|NO| OutputDispari
+    OutputPari --> End
+    OutputDispari --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input fill:#87CEEB
+    style OutputPari fill:#87CEEB
+    style OutputDispari fill:#87CEEB
+    style Decision fill:#FFEB9C
 ```
 
 **c) Selezione Multipla (Nidificata)**
