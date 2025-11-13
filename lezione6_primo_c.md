@@ -381,526 +381,6 @@ int main() {
 }
 ```
 
----
-
-### ESERCIZI AUTONOMI
-
-#### Esercizio 6: Creatività
-
-**6.1** Crea un programma che stampa un banner ASCII con il tuo nome.
-
-**6.2** Crea una "ricevuta fiscale" formattata con almeno 5 prodotti.
-
-**6.3** Crea un programma che mostra la tua "schedina" sportiva preferita (squadre e punteggi).
-
-**6.4** Disegna una bandiera usando caratteri ASCII.
-
-**6.5** Crea un "orologio" che mostra l'ora (fissa, es. 14:30:45) in formato digitale ASCII.
-
----
-
-### ESERCIZI DA SVOLGERE A CASA
-
-**Homework 1:** Scrivi un programma che stampa la tua presentazione personale includendo:
-- Nome completo
-- Età e data di nascita
-- Città di residenza
-- 3 hobby preferiti
-- Messaggio di chiusura
-
-Usa printf formattato e sequenze di escape per renderlo leggibile.
-
-**Homework 2:** Crea un programma che converte:
-- Un valore in metri in: centimetri, millimetri, chilometri
-- Stampa i risultati in formato tabellare
-
-**Homework 3:** Scrivi un programma che calcola e visualizza:
-- Perimetro e area di un rettangolo (dati base e altezza)
-- Perimetro e area di un cerchio (dato raggio)
-- Usa π = 3.14159
-
-**Homework 4:** Crea un "menu di ristorante" formattato con:
-- Intestazione
-- Antipasti (almeno 3) con prezzi
-- Primi (almeno 3) con prezzi
-- Secondi (almeno 3) con prezzi
-- Dolci (almeno 2) con prezzi
-- Usa allineamento e formattazione
-
-**Homework 5:** Ricerca ed esperimenta:
-- Cosa fa la funzione `puts()`?
-- Differenza tra `printf()` e `puts()`
-- Cosa fa `putchar()`?
-- Scrivi esempi pratici
-
-**Homework 6:** Crea un programma che mostra una tabella di conversione:
-- Numeri da 0 a 16
-- In decimale, binario (scritto manualmente), ottale, esadecimale
-- Formato tabellare pulito
-
-**Esempio output:**
-```
-Dec  Bin   Oct  Hex
-  0  0000   0    0
-  1  0001   1    1
-  2  0010   2    2
-...
- 16 10000  20   10
-```
-
----
-
-## APPROFONDIMENTI
-
-### Storia del "Hello, World!"
-
-**Origine:**
-- Prima apparizione: "A Tutorial Introduction to the Language B" (Brian Kernighan, 1972)
-- Reso famoso da "The C Programming Language" (K&R, 1978)
-- Diventato lo standard de facto per test di linguaggi
-
-**Versione originale (B language):**
-```b
-main() {
-    extrn a, b, c;
-    putchar(a); putchar(b); putchar(c);
-}
-a 'hel';
-b 'lo,';
-c ' wo\n';
-```
-
-**Versione C (K&R 1978):**
-```c
-main()
-{
-    printf("hello, world\n");
-}
-```
-
-**Versione moderna:**
-```c
-#include <stdio.h>
-
-int main(void) {
-    printf("Hello, World!\n");
-    return 0;
-}
-```
-
-### Printf: Storia e Funzionamento Interno
-
-**Origine nome:** "print formatted" (stampa formattata)
-
-**Implementazione semplificata:**
-```c
-// printf è una funzione variadica (numero variabile argomenti)
-int printf(const char *format, ...) {
-    // 1. Parse stringa formato
-    // 2. Per ogni %X trovato:
-    //    - Preleva prossimo argomento
-    //    - Converti secondo specificatore
-    //    - Stampa
-    // 3. Ritorna numero caratteri stampati
-}
-```
-
-**Vulnerabilità "format string":**
-```c
-// PERICOLOSO! Mai fare così:
-char input[100];
-gets(input); // Input da utente
-printf(input); // BUG DI SICUREZZA!
-
-// Se input = "%x%x%x%x" legge memoria stack!
-
-// SICURO:
-printf("%s", input);
-```
-
-### Preprocessore C
-
-Il **preprocessore** elabora il codice PRIMA della compilazione.
-
-**Direttive principali:**
-
-**1. #include:**
-```c
-#include <stdio.h>     // Header di sistema (cerchi standard)
-#include "miofile.h"   // Header locale (directory corrente)
-```
-
-**2. #define:**
-```c
-#define PI 3.14159
-#define MAX(a,b) ((a) > (b) ? (a) : (b))
-
-// Uso:
-float area = PI * raggio * raggio;
-int maggiore = MAX(10, 20);
-```
-
-**3. Compilazione condizionale:**
-```c
-#ifdef DEBUG
-    printf("Debug: x = %d\n", x);
-#endif
-
-#if VERSIONE >= 2
-    nuova_funzione();
-#else
-    vecchia_funzione();
-#endif
-```
-
-**4. Pragma:**
-```c
-#pragma once  // Include una sola volta (alternativa a include guard)
-```
-
-**Esempio espansione:**
-```c
-// Codice originale
-#define QUADRATO(x) ((x) * (x))
-int y = QUADRATO(5);
-
-// Dopo preprocessore
-int y = ((5) * (5));
-```
-
-### Ottimizzazione Compilatore
-
-Il compilatore può **ottimizzare** il codice per renderlo più veloce.
-
-**Esempio:**
-```c
-// Codice originale
-int calcola() {
-    int x = 2;
-    int y = 3;
-    int z = x * y + 1;
-    return z;
-}
-
-// Dopo ottimizzazione (-O2)
-int calcola() {
-    return 7;  // Tutto calcolato a compile-time!
-}
-```
-
-**Livelli ottimizzazione:**
-- `-O0`: Nessuna (default, veloce compilazione)
-- `-O1`: Base (poco impatto compile time)
-- `-O2`: Media (raccomandato per release)
-- `-O3`: Aggressiva (può aumentare dimensione)
-- `-Os`: Dimensione (binario piccolo)
-- `-Ofast`: Massima velocità (può violare standard)
-
-**Esempio impatto:**
-```c
-// Benchmark: somma 1 miliardo di numeri
-int somma = 0;
-for (int i = 0; i < 1000000000; i++) {
-    somma += i;
-}
-
-Risultati:
--O0: 2.5 secondi
--O1: 1.2 secondi
--O2: 0.3 secondi
--O3: 0.001 secondi (loop eliminato! calcolo diretto)
-```
-
-### Cross-Compilation
-
-Puoi compilare per **piattaforme diverse** dalla tua.
-
-**Esempio: compilare per ARM su x86:**
-```bash
-# Installa cross-compiler
-sudo apt-get install gcc-arm-linux-gnueabi
-
-# Compila per ARM
-arm-linux-gnueabi-gcc -o hello_arm hello.c
-
-# Non puoi eseguire direttamente su x86!
-# Serve emulatore o dispositivo ARM
-```
-
-**Usi:**
-- Sviluppo embedded (Arduino, Raspberry Pi)
-- Sviluppo mobile
-- Sistemi industriali
-
-### Standard Library vs System Calls
-
-**Standard Library (libc):**
-- Funzioni portabili (printf, malloc, fopen)
-- Astratte dal sistema operativo
-- Garantite su tutte le piattaforme
-
-**System Calls:**
-- Funzioni specifiche OS (Linux: fork, Windows: CreateProcess)
-- Accesso diretto al kernel
-- Non portabili
-
-**Esempio:**
-```c
-// Standard Library (portabile)
-FILE *f = fopen("file.txt", "r");
-fclose(f);
-
-// System Call Linux (non portabile)
-int fd = open("file.txt", O_RDONLY);
-close(fd);
-```
-
-### Undefined Behavior (UB)
-
-Alcuni errori causano **comportamento indefinito**: il programma può fare QUALSIASI COSA.
-
-**Esempi UB:**
-```c
-// 1. Array out of bounds
-int arr[5];
-arr[10] = 42;  // UB!
-
-// 2. Divisione per zero
-int x = 10 / 0;  // UB!
-
-// 3. Signed integer overflow
-int max = 2147483647;
-int y = max + 1;  // UB!
-
-// 4. Dereferenziare NULL
-int *p = NULL;
-*p = 5;  // UB!
-
-// 5. Usare variabile non inizializzata
-int x;
-printf("%d", x);  // UB!
-```
-
-**Conseguenze UB:**
-- Crash
-- Risultati casuali
-- Funziona su PC ma non su server
-- "Nasal demons" (folklore: può far uscire demoni dal naso!)
-
-**Prevenzione:**
-- Usa `-Wall -Wextra -Werror`
-- Usa sanitizer: `-fsanitize=address,undefined`
-- Inizializza sempre variabili
-- Controlla limiti array
-
----
-
-## RIEPILOGO CONCETTI CHIAVE
-
-### Struttura Programma C
-```c
-#include <librerie.h>  // Preprocessore
-
-int main() {           // Funzione principale
-    // Istruzioni
-    return 0;          // Codice uscita
-}
-```
-
-### Printf Essenziale
-```c
-printf("formato", argomenti);
-
-Specificatori principali:
-%d / %i  - int
-%f       - float/double
-%c       - char
-%s       - stringa
-%x / %X  - esadecimale
-%p       - puntatore
-%%       - carattere %
-```
-
-### Sequenze Escape
-```c
-\n  - newline
-\t  - tab
-\\  - backslash
-\"  - doppi apici
-\'  - apice singolo
-```
-
-### Compilazione
-```bash
-gcc -Wall -Wextra file.c -o programma
-./programma
-```
-
----
-
-## TABELLE DI RIFERIMENTO RAPIDO
-
-### Specificatori Printf Comuni
-
-| Tipo | Specificatore | Esempio |
-|------|---------------|---------|
-| int | %d | printf("%d", 42) |
-| unsigned | %u | printf("%u", 42) |
-| long | %ld | printf("%ld", 123456L) |
-| float/double | %f | printf("%f", 3.14) |
-| float (2 dec) | %.2f | printf("%.2f", 3.14) |
-| char | %c | printf("%c", 'A') |
-| string | %s | printf("%s", "ciao") |
-| hex | %x | printf("%x", 255) |
-| pointer | %p | printf("%p", &var) |
-
-### Opzioni GCC Utili
-
-| Opzione | Scopo |
-|---------|-------|
-| `-Wall` | Warning comuni |
-| `-Wextra` | Warning extra |
-| `-Werror` | Warning → errori |
-| `-g` | Debug info |
-| `-O2` | Ottimizzazione |
-| `-std=c99` | Standard C99 |
-| `-o file` | Nome output |
-| `-c` | Compila senza link |
-
-### Caratteri Escape
-
-| Sequenza | Nome | ASCII |
-|----------|------|-------|
-| `\n` | Newline | 10 |
-| `\t` | Tab | 9 |
-| `\r` | Carriage return | 13 |
-| `\\` | Backslash | 92 |
-| `\'` | Apice | 39 |
-| `\"` | Doppi apici | 34 |
-| `\0` | Null | 0 |
-| `\a` | Bell | 7 |
-
----
-
-## PROBLEMI COMUNI E SOLUZIONI
-
-### Problema 1: Printf non stampa
-
-```c
-printf("Hello");  // Non appare!
-```
-
-**Causa:** Buffer non svuotato
-
-**Soluzione:**
-```c
-printf("Hello\n");  // \n svuota buffer
-// oppure
-printf("Hello");
-fflush(stdout);
-```
-
-### Problema 2: Warning "implicit declaration"
-
-```
-warning: implicit declaration of function 'printf'
-```
-
-**Causa:** Manca include
-
-**Soluzione:**
-```c
-#include <stdio.h>  // In cima al file
-```
-
-### Problema 3: Caratteri strani su Windows
-
-**Causa:** Encoding diverso (Windows usa CP-1252, non UTF-8)
-
-**Soluzione:**
-```c
-// Aggiungi in main():
-#ifdef _WIN32
-    system("chcp 65001 > nul");  // UTF-8 su Windows
-#endif
-```
-
-### Problema 4: Return type mismatch
-
-```
-warning: control reaches end of non-void function
-```
-
-**Causa:** Manca return in funzione
-
-**Soluzione:**
-```c
-int main() {
-    printf("Hello\n");
-    return 0;  // ← Obbligatorio!
-}
-```
-
----
-
-## PUNTI CHIAVE DELLA LEZIONE
-
-✓ **main()** è il punto di ingresso, obbligatorio  
-✓ **#include <stdio.h>** per usare printf  
-✓ **printf()** stampa output formattato con specificatori %  
-✓ **return 0** indica successo (0 = OK, altro = errore)  
-✓ **`;`** termina ogni istruzione  
-✓ **Commenti** con `//` (singola) o `/* */` (multi-riga)  
-✓ **Compilazione**: `gcc file.c -o programma`  
-✓ **Indentazione** e stile: mantieni consistenza  
-✓ **Warning**: sempre abilitare con `-Wall -Wextra`  
-✓ **Documentazione**: commenta il PERCHÉ, non il COSA
-
----
-
-## PREPARAZIONE PER LA PROSSIMA LEZIONE
-
-Nella prossima lezione studieremo:
-- **Variabili e tipi di dato**: int, float, char, double
-- **Dichiarazione e inizializzazione**
-- **Input con scanf()**: leggere dati da utente
-- **Operatori aritmetici**: +, -, *, /, %
-- **Conversioni di tipo**: casting
-
-Porta con te:
-- Ambiente C funzionante
-- Esercizi homework completati
-- Domande su printf o compilazione
-- Esperimenti fatti autonomamente
-
-**Verifica preparazione:**
-- Riesci a compilare ed eseguire programmi?
-- Conosci i principali specificatori printf?
-- Sai come commentare il codice?
-- Hai familiarità con errori compilazione?
-
----
-
-## GLOSSARIO TECNICO
-
-- **Compilatore**: Traduce codice C in eseguibile
-- **Preprocessore**: Elabora direttive # prima compilazione
-- **Header file**: File .h con dichiarazioni funzioni
-- **main()**: Funzione principale, punto ingresso
-- **printf()**: Funzione stampa formattata
-- **Specificatore formato**: %d, %f, %s in printf
-- **Sequenza escape**: \n, \t, \\ caratteri speciali
-- **Commento**: Testo ignorato dal compilatore
-- **Indentazione**: Spaziatura per leggibilità
-- **Warning**: Avviso compilatore (non errore fatale)
-- **Linking**: Collegamento librerie a programma
-- **Standard library**: Libreria funzioni C standard (libc)
-- **Return code**: Valore ritornato da main (0 = successo)
-- **Buffer**: Memoria temporanea per I/O
-- **Undefined Behavior**: Comportamento non specificato standard
-
----
-
 **Congratulazioni! Hai scritto i tuoi primi programmi in C! 🎉**
 
 Ora conosci la struttura base di un programma C e sai come stampare output formattato. Nelle prossime lezioni aggiungeremo input, variabili e logica per creare programmi interattivi e potenti!) {
@@ -1814,7 +1294,522 @@ int main() {
 
 **4.2** Codice con errori multipli:
 
-```c
-include <stdio.h>
+---
 
-int main(
+### ESERCIZI AUTONOMI
+
+#### Esercizio 6: Creatività
+
+**6.1** Crea un programma che stampa un banner ASCII con il tuo nome.
+
+**6.2** Crea una "ricevuta fiscale" formattata con almeno 5 prodotti.
+
+**6.3** Crea un programma che mostra la tua "schedina" sportiva preferita (squadre e punteggi).
+
+**6.4** Disegna una bandiera usando caratteri ASCII.
+
+**6.5** Crea un "orologio" che mostra l'ora (fissa, es. 14:30:45) in formato digitale ASCII.
+
+---
+
+### ESERCIZI DA SVOLGERE A CASA
+
+**Homework 1:** Scrivi un programma che stampa la tua presentazione personale includendo:
+- Nome completo
+- Età e data di nascita
+- Città di residenza
+- 3 hobby preferiti
+- Messaggio di chiusura
+
+Usa printf formattato e sequenze di escape per renderlo leggibile.
+
+**Homework 2:** Crea un programma che converte:
+- Un valore in metri in: centimetri, millimetri, chilometri
+- Stampa i risultati in formato tabellare
+
+**Homework 3:** Scrivi un programma che calcola e visualizza:
+- Perimetro e area di un rettangolo (dati base e altezza)
+- Perimetro e area di un cerchio (dato raggio)
+- Usa π = 3.14159
+
+**Homework 4:** Crea un "menu di ristorante" formattato con:
+- Intestazione
+- Antipasti (almeno 3) con prezzi
+- Primi (almeno 3) con prezzi
+- Secondi (almeno 3) con prezzi
+- Dolci (almeno 2) con prezzi
+- Usa allineamento e formattazione
+
+**Homework 5:** Ricerca ed esperimenta:
+- Cosa fa la funzione `puts()`?
+- Differenza tra `printf()` e `puts()`
+- Cosa fa `putchar()`?
+- Scrivi esempi pratici
+
+**Homework 6:** Crea un programma che mostra una tabella di conversione:
+- Numeri da 0 a 16
+- In decimale, binario (scritto manualmente), ottale, esadecimale
+- Formato tabellare pulito
+
+**Esempio output:**
+```
+Dec  Bin   Oct  Hex
+  0  0000   0    0
+  1  0001   1    1
+  2  0010   2    2
+...
+ 16 10000  20   10
+```
+
+---
+
+## APPROFONDIMENTI
+
+### Storia del "Hello, World!"
+
+**Origine:**
+- Prima apparizione: "A Tutorial Introduction to the Language B" (Brian Kernighan, 1972)
+- Reso famoso da "The C Programming Language" (K&R, 1978)
+- Diventato lo standard de facto per test di linguaggi
+
+**Versione originale (B language):**
+```b
+main() {
+    extrn a, b, c;
+    putchar(a); putchar(b); putchar(c);
+}
+a 'hel';
+b 'lo,';
+c ' wo\n';
+```
+
+**Versione C (K&R 1978):**
+```c
+main()
+{
+    printf("hello, world\n");
+}
+```
+
+**Versione moderna:**
+```c
+#include <stdio.h>
+
+int main(void) {
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+### Printf: Storia e Funzionamento Interno
+
+**Origine nome:** "print formatted" (stampa formattata)
+
+**Implementazione semplificata:**
+```c
+// printf è una funzione variadica (numero variabile argomenti)
+int printf(const char *format, ...) {
+    // 1. Parse stringa formato
+    // 2. Per ogni %X trovato:
+    //    - Preleva prossimo argomento
+    //    - Converti secondo specificatore
+    //    - Stampa
+    // 3. Ritorna numero caratteri stampati
+}
+```
+
+**Vulnerabilità "format string":**
+```c
+// PERICOLOSO! Mai fare così:
+char input[100];
+gets(input); // Input da utente
+printf(input); // BUG DI SICUREZZA!
+
+// Se input = "%x%x%x%x" legge memoria stack!
+
+// SICURO:
+printf("%s", input);
+```
+
+### Preprocessore C
+
+Il **preprocessore** elabora il codice PRIMA della compilazione.
+
+**Direttive principali:**
+
+**1. #include:**
+```c
+#include <stdio.h>     // Header di sistema (cerchi standard)
+#include "miofile.h"   // Header locale (directory corrente)
+```
+
+**2. #define:**
+```c
+#define PI 3.14159
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+
+// Uso:
+float area = PI * raggio * raggio;
+int maggiore = MAX(10, 20);
+```
+
+**3. Compilazione condizionale:**
+```c
+#ifdef DEBUG
+    printf("Debug: x = %d\n", x);
+#endif
+
+#if VERSIONE >= 2
+    nuova_funzione();
+#else
+    vecchia_funzione();
+#endif
+```
+
+**4. Pragma:**
+```c
+#pragma once  // Include una sola volta (alternativa a include guard)
+```
+
+**Esempio espansione:**
+```c
+// Codice originale
+#define QUADRATO(x) ((x) * (x))
+int y = QUADRATO(5);
+
+// Dopo preprocessore
+int y = ((5) * (5));
+```
+
+### Ottimizzazione Compilatore
+
+Il compilatore può **ottimizzare** il codice per renderlo più veloce.
+
+**Esempio:**
+```c
+// Codice originale
+int calcola() {
+    int x = 2;
+    int y = 3;
+    int z = x * y + 1;
+    return z;
+}
+
+// Dopo ottimizzazione (-O2)
+int calcola() {
+    return 7;  // Tutto calcolato a compile-time!
+}
+```
+
+**Livelli ottimizzazione:**
+- `-O0`: Nessuna (default, veloce compilazione)
+- `-O1`: Base (poco impatto compile time)
+- `-O2`: Media (raccomandato per release)
+- `-O3`: Aggressiva (può aumentare dimensione)
+- `-Os`: Dimensione (binario piccolo)
+- `-Ofast`: Massima velocità (può violare standard)
+
+**Esempio impatto:**
+```c
+// Benchmark: somma 1 miliardo di numeri
+int somma = 0;
+for (int i = 0; i < 1000000000; i++) {
+    somma += i;
+}
+
+Risultati:
+-O0: 2.5 secondi
+-O1: 1.2 secondi
+-O2: 0.3 secondi
+-O3: 0.001 secondi (loop eliminato! calcolo diretto)
+```
+
+### Cross-Compilation
+
+Puoi compilare per **piattaforme diverse** dalla tua.
+
+**Esempio: compilare per ARM su x86:**
+```bash
+# Installa cross-compiler
+sudo apt-get install gcc-arm-linux-gnueabi
+
+# Compila per ARM
+arm-linux-gnueabi-gcc -o hello_arm hello.c
+
+# Non puoi eseguire direttamente su x86!
+# Serve emulatore o dispositivo ARM
+```
+
+**Usi:**
+- Sviluppo embedded (Arduino, Raspberry Pi)
+- Sviluppo mobile
+- Sistemi industriali
+
+### Standard Library vs System Calls
+
+**Standard Library (libc):**
+- Funzioni portabili (printf, malloc, fopen)
+- Astratte dal sistema operativo
+- Garantite su tutte le piattaforme
+
+**System Calls:**
+- Funzioni specifiche OS (Linux: fork, Windows: CreateProcess)
+- Accesso diretto al kernel
+- Non portabili
+
+**Esempio:**
+```c
+// Standard Library (portabile)
+FILE *f = fopen("file.txt", "r");
+fclose(f);
+
+// System Call Linux (non portabile)
+int fd = open("file.txt", O_RDONLY);
+close(fd);
+```
+
+### Undefined Behavior (UB)
+
+Alcuni errori causano **comportamento indefinito**: il programma può fare QUALSIASI COSA.
+
+**Esempi UB:**
+```c
+// 1. Array out of bounds
+int arr[5];
+arr[10] = 42;  // UB!
+
+// 2. Divisione per zero
+int x = 10 / 0;  // UB!
+
+// 3. Signed integer overflow
+int max = 2147483647;
+int y = max + 1;  // UB!
+
+// 4. Dereferenziare NULL
+int *p = NULL;
+*p = 5;  // UB!
+
+// 5. Usare variabile non inizializzata
+int x;
+printf("%d", x);  // UB!
+```
+
+**Conseguenze UB:**
+- Crash
+- Risultati casuali
+- Funziona su PC ma non su server
+- "Nasal demons" (folklore: può far uscire demoni dal naso!)
+
+**Prevenzione:**
+- Usa `-Wall -Wextra -Werror`
+- Usa sanitizer: `-fsanitize=address,undefined`
+- Inizializza sempre variabili
+- Controlla limiti array
+
+---
+
+## RIEPILOGO CONCETTI CHIAVE
+
+### Struttura Programma C
+```c
+#include <librerie.h>  // Preprocessore
+
+int main() {           // Funzione principale
+    // Istruzioni
+    return 0;          // Codice uscita
+}
+```
+
+### Printf Essenziale
+```c
+printf("formato", argomenti);
+
+Specificatori principali:
+%d / %i  - int
+%f       - float/double
+%c       - char
+%s       - stringa
+%x / %X  - esadecimale
+%p       - puntatore
+%%       - carattere %
+```
+
+### Sequenze Escape
+```c
+\n  - newline
+\t  - tab
+\\  - backslash
+\"  - doppi apici
+\'  - apice singolo
+```
+
+### Compilazione
+```bash
+gcc -Wall -Wextra file.c -o programma
+./programma
+```
+
+---
+
+## TABELLE DI RIFERIMENTO RAPIDO
+
+### Specificatori Printf Comuni
+
+| Tipo | Specificatore | Esempio |
+|------|---------------|---------|
+| int | %d | printf("%d", 42) |
+| unsigned | %u | printf("%u", 42) |
+| long | %ld | printf("%ld", 123456L) |
+| float/double | %f | printf("%f", 3.14) |
+| float (2 dec) | %.2f | printf("%.2f", 3.14) |
+| char | %c | printf("%c", 'A') |
+| string | %s | printf("%s", "ciao") |
+| hex | %x | printf("%x", 255) |
+| pointer | %p | printf("%p", &var) |
+
+### Opzioni GCC Utili
+
+| Opzione | Scopo |
+|---------|-------|
+| `-Wall` | Warning comuni |
+| `-Wextra` | Warning extra |
+| `-Werror` | Warning → errori |
+| `-g` | Debug info |
+| `-O2` | Ottimizzazione |
+| `-std=c99` | Standard C99 |
+| `-o file` | Nome output |
+| `-c` | Compila senza link |
+
+### Caratteri Escape
+
+| Sequenza | Nome | ASCII |
+|----------|------|-------|
+| `\n` | Newline | 10 |
+| `\t` | Tab | 9 |
+| `\r` | Carriage return | 13 |
+| `\\` | Backslash | 92 |
+| `\'` | Apice | 39 |
+| `\"` | Doppi apici | 34 |
+| `\0` | Null | 0 |
+| `\a` | Bell | 7 |
+
+---
+
+## PROBLEMI COMUNI E SOLUZIONI
+
+### Problema 1: Printf non stampa
+
+```c
+printf("Hello");  // Non appare!
+```
+
+**Causa:** Buffer non svuotato
+
+**Soluzione:**
+```c
+printf("Hello\n");  // \n svuota buffer
+// oppure
+printf("Hello");
+fflush(stdout);
+```
+
+### Problema 2: Warning "implicit declaration"
+
+```
+warning: implicit declaration of function 'printf'
+```
+
+**Causa:** Manca include
+
+**Soluzione:**
+```c
+#include <stdio.h>  // In cima al file
+```
+
+### Problema 3: Caratteri strani su Windows
+
+**Causa:** Encoding diverso (Windows usa CP-1252, non UTF-8)
+
+**Soluzione:**
+```c
+// Aggiungi in main():
+#ifdef _WIN32
+    system("chcp 65001 > nul");  // UTF-8 su Windows
+#endif
+```
+
+### Problema 4: Return type mismatch
+
+```
+warning: control reaches end of non-void function
+```
+
+**Causa:** Manca return in funzione
+
+**Soluzione:**
+```c
+int main() {
+    printf("Hello\n");
+    return 0;  // ← Obbligatorio!
+}
+```
+
+---
+
+## PUNTI CHIAVE DELLA LEZIONE
+
+✓ **main()** è il punto di ingresso, obbligatorio  
+✓ **#include <stdio.h>** per usare printf  
+✓ **printf()** stampa output formattato con specificatori %  
+✓ **return 0** indica successo (0 = OK, altro = errore)  
+✓ **`;`** termina ogni istruzione  
+✓ **Commenti** con `//` (singola) o `/* */` (multi-riga)  
+✓ **Compilazione**: `gcc file.c -o programma`  
+✓ **Indentazione** e stile: mantieni consistenza  
+✓ **Warning**: sempre abilitare con `-Wall -Wextra`  
+✓ **Documentazione**: commenta il PERCHÉ, non il COSA
+
+---
+
+## PREPARAZIONE PER LA PROSSIMA LEZIONE
+
+Nella prossima lezione studieremo:
+- **Variabili e tipi di dato**: int, float, char, double
+- **Dichiarazione e inizializzazione**
+- **Input con scanf()**: leggere dati da utente
+- **Operatori aritmetici**: +, -, *, /, %
+- **Conversioni di tipo**: casting
+
+Porta con te:
+- Ambiente C funzionante
+- Esercizi homework completati
+- Domande su printf o compilazione
+- Esperimenti fatti autonomamente
+
+**Verifica preparazione:**
+- Riesci a compilare ed eseguire programmi?
+- Conosci i principali specificatori printf?
+- Sai come commentare il codice?
+- Hai familiarità con errori compilazione?
+
+---
+
+## GLOSSARIO TECNICO
+
+- **Compilatore**: Traduce codice C in eseguibile
+- **Preprocessore**: Elabora direttive # prima compilazione
+- **Header file**: File .h con dichiarazioni funzioni
+- **main()**: Funzione principale, punto ingresso
+- **printf()**: Funzione stampa formattata
+- **Specificatore formato**: %d, %f, %s in printf
+- **Sequenza escape**: \n, \t, \\ caratteri speciali
+- **Commento**: Testo ignorato dal compilatore
+- **Indentazione**: Spaziatura per leggibilità
+- **Warning**: Avviso compilatore (non errore fatale)
+- **Linking**: Collegamento librerie a programma
+- **Standard library**: Libreria funzioni C standard (libc)
+- **Return code**: Valore ritornato da main (0 = successo)
+- **Buffer**: Memoria temporanea per I/O
+- **Undefined Behavior**: Comportamento non specificato standard
+
+---
