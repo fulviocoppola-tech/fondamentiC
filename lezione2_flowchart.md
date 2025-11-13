@@ -256,31 +256,35 @@ flowchart TD
 ```
 
 **c) Selezione Multipla (Nidificata)**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-        ╱────┴────╲
-       ╱  Leggi N  ╲
-      ╱______________╲
-             │
-          ╱──┴──╲
-         ╱ N > 0 ╲
-        ╱____?____╲
-       SI│        │NO
-         │     ╱──┴──╲
-         │    ╱ N < 0 ╲
-         │   ╱____?____╲
-         │  SI│        │NO
-         │    │        │
-      ┌──┴──┐ ┌┴────┐ ┌┴────┐
-      │"Pos"│ │"Neg"│ │"Zero"│
-      └──┬──┘ └┬────┘ └┬────┘
-         └─────┴───────┘
-          ┌──┴──┐
-          │FINE │
-          └─────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Input[/Leggi N/]
+    Decision1{N > 0?}
+    Decision2{N < 0?}
+    OutputPos[/Scrivi 'Positivo'/]
+    OutputNeg[/Scrivi 'Negativo'/]
+    OutputZero[/Scrivi 'Zero'/]
+    End([FINE])
+    
+    Start --> Input
+    Input --> Decision1
+    Decision1 -->|SI| OutputPos
+    Decision1 -->|NO| Decision2
+    Decision2 -->|SI| OutputNeg
+    Decision2 -->|NO| OutputZero
+    OutputPos --> End
+    OutputNeg --> End
+    OutputZero --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input fill:#87CEEB
+    style OutputPos fill:#87CEEB
+    style OutputNeg fill:#87CEEB
+    style OutputZero fill:#87CEEB
+    style Decision1 fill:#FFEB9C
+    style Decision2 fill:#FFEB9C
 ```
 
 #### 3. ITERAZIONE (o Ciclo o Loop)
@@ -294,37 +298,31 @@ flowchart TD
 - Se la condizione è falsa inizialmente, il blocco non viene mai eseguito
 
 **Esempio: Contare da 1 a 5**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-      ┌──────┴──────┐
-      │  CONT = 1   │
-      └──────┬──────┘
-             │
-      ┌──────┴──────┐
-      │      ●      │◄──────┐
-      └──────┬──────┘       │
-             │               │
-          ╱──┴──╲           │
-         ╱ CONT ╲           │
-        ╱  <= 5  ╲          │
-       SI│   ?    │NO       │
-         │        └──────┐  │
-    ╱────┴────╲         │  │
-   ╱Scrivi CONT╲        │  │
-  ╱______________╲       │  │
-         │               │  │
-    ┌────┴────┐         │  │
-    │CONT=CONT│         │  │
-    │   +1    │         │  │
-    └────┬────┘         │  │
-         └──────────────┘  │
-                │          │
-             ┌──┴──┐       │
-             │FINE │       │
-             └─────┘       │
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Init[CONT = 1]
+    Conn((●))
+    Decision{CONT <= 5?}
+    Output[/Scrivi CONT/]
+    Increment[CONT = CONT + 1]
+    End([FINE])
+    
+    Start --> Init
+    Init --> Conn
+    Conn --> Decision
+    Decision -->|SI| Output
+    Decision -->|NO| End
+    Output --> Increment
+    Increment --> Conn
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Init fill:#FFE4B5
+    style Output fill:#87CEEB
+    style Increment fill:#FFE4B5
+    style Decision fill:#FFEB9C
+    style Conn fill:#DDA0DD
 ```
 
 **b) DO-WHILE (Condizione alla fine)**
@@ -332,35 +330,28 @@ flowchart TD
 - Il blocco viene eseguito almeno una volta
 
 **Esempio: Validazione input (ripeti finché valido)**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-      ┌──────┴──────┐
-      │      ●      │◄──────┐
-      └──────┬──────┘       │
-             │               │
-        ╱────┴────╲          │
-       ╱  Leggi N  ╲         │
-      ╱______________╲        │
-             │               │
-          ╱──┴──╲           │
-         ╱ N < 1 ╲          │
-        ╱   OR    ╲         │
-       ╱  N > 10  ╱         │
-      ╱     ?    ╱          │
-     SI│        │NO         │
-       │        └──────┐    │
-  ╱────┴────╲         │    │
- ╱Scrivi"Errore"╲     │    │
-╱________________╲     │    │
-       │               │    │
-       └───────────────┘    │
-                            │
-                      ┌─────┴────┐
-                      │   FINE   │
-                      └──────────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Conn((●))
+    Input[/Leggi N/]
+    Decision{"N < 1<br/>OR<br/>N > 10?"}
+    Error[/Scrivi 'Errore'/]
+    End([FINE])
+    
+    Start --> Conn
+    Conn --> Input
+    Input --> Decision
+    Decision -->|SI| Error
+    Decision -->|NO| End
+    Error --> Conn
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input fill:#87CEEB
+    style Error fill:#87CEEB
+    style Decision fill:#FFEB9C
+    style Conn fill:#DDA0DD
 ```
 
 **c) FOR (Ciclo con contatore)**
@@ -368,49 +359,40 @@ flowchart TD
 - Combina inizializzazione, condizione e incremento
 
 **Esempio: Somma dei primi N numeri**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-        ╱────┴────╲
-       ╱  Leggi N  ╲
-      ╱______________╲
-             │
-      ┌──────┴──────┐
-      │  SOMMA = 0  │
-      └──────┬──────┘
-             │
-      ┌──────┴──────┐
-      │    I = 1    │
-      └──────┬──────┘
-             │
-      ┌──────┴──────┐
-      │      ●      │◄──────┐
-      └──────┬──────┘       │
-             │               │
-          ╱──┴──╲           │
-         ╱  I <=  ╲          │
-        ╱    N     ╲         │
-       SI│   ?      │NO      │
-         │          └────┐   │
-    ┌────┴────┐         │   │
-    │SOMMA=   │         │   │
-    │SOMMA+I  │         │   │
-    └────┬────┘         │   │
-         │              │   │
-    ┌────┴────┐         │   │
-    │ I = I+1 │         │   │
-    └────┬────┘         │   │
-         └──────────────┘   │
-                            │
-                       ╱────┴────╲
-                      ╱Scrivi SOMMA╲
-                     ╱______________╲
-                            │
-                        ┌───┴───┐
-                        │ FINE  │
-                        └───────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Input[/Leggi N/]
+    InitSum[SOMMA = 0]
+    InitI[I = 1]
+    Conn((●))
+    Decision{I <= N?}
+    Process[SOMMA = SOMMA + I]
+    Increment[I = I + 1]
+    Output[/Scrivi SOMMA/]
+    End([FINE])
+    
+    Start --> Input
+    Input --> InitSum
+    InitSum --> InitI
+    InitI --> Conn
+    Conn --> Decision
+    Decision -->|SI| Process
+    Decision -->|NO| Output
+    Process --> Increment
+    Increment --> Conn
+    Output --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input fill:#87CEEB
+    style Output fill:#87CEEB
+    style InitSum fill:#FFE4B5
+    style InitI fill:#FFE4B5
+    style Process fill:#FFE4B5
+    style Increment fill:#FFE4B5
+    style Decision fill:#FFEB9C
+    style Conn fill:#DDA0DD
 ```
 
 ---
@@ -541,20 +523,35 @@ FINE
 **1. Problema:** Leggere un numero e dire se è positivo, negativo o zero.
 
 **2. Flow Chart:**
-```
-    [INIZIO] → [Leggi N] → <N>0?> → SI → [Scrivi "Positivo"]
-                              │                    │
-                              NO                   │
-                              ↓                    │
-                           <N<0?> → SI → [Scrivi "Negativo"]
-                              │                    │
-                              NO                   │
-                              ↓                    │
-                        [Scrivi "Zero"]            │
-                              │                    │
-                              └────────┬───────────┘
-                                       ↓
-                                    [FINE]
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Input[/Leggi N/]
+    Decision1{N > 0?}
+    Decision2{N < 0?}
+    OutputPos[/Scrivi 'Positivo'/]
+    OutputNeg[/Scrivi 'Negativo'/]
+    OutputZero[/Scrivi 'Zero'/]
+    End([FINE])
+    
+    Start --> Input
+    Input --> Decision1
+    Decision1 -->|SI| OutputPos
+    Decision1 -->|NO| Decision2
+    Decision2 -->|SI| OutputNeg
+    Decision2 -->|NO| OutputZero
+    OutputPos --> End
+    OutputNeg --> End
+    OutputZero --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input fill:#87CEEB
+    style OutputPos fill:#87CEEB
+    style OutputNeg fill:#87CEEB
+    style OutputZero fill:#87CEEB
+    style Decision1 fill:#FFEB9C
+    style Decision2 fill:#FFEB9C
 ```
 
 **3. Pseudocodice:**
@@ -603,92 +600,88 @@ int main() {
 **1.1** Disegna il flow chart per calcolare la somma di due numeri.
 
 **Soluzione:**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-        ╱────┴────╲
-       ╱  Leggi A  ╲
-      ╱______________╲
-             │
-        ╱────┴────╲
-       ╱  Leggi B  ╲
-      ╱______________╲
-             │
-      ┌──────┴──────┐
-      │ SOMMA = A+B │
-      └──────┬──────┘
-             │
-        ╱────┴────╲
-       ╱Scrivi SOMMA╲
-      ╱______________╲
-             │
-        ┌────┴────┐
-        │  FINE   │
-        └─────────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    InputA[/Leggi A/]
+    InputB[/Leggi B/]
+    Process[SOMMA = A + B]
+    Output[/Scrivi SOMMA/]
+    End([FINE])
+    
+    Start --> InputA
+    InputA --> InputB
+    InputB --> Process
+    Process --> Output
+    Output --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style InputA fill:#87CEEB
+    style InputB fill:#87CEEB
+    style Output fill:#87CEEB
+    style Process fill:#FFE4B5
 ```
 
 **1.2** Disegna il flow chart per determinare se un numero è pari.
 
 **Soluzione:**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-        ╱────┴────╲
-       ╱  Leggi N  ╲
-      ╱______________╲
-             │
-      ┌──────┴──────┐
-      │ RESTO=N%2   │
-      └──────┬──────┘
-             │
-          ╱──┴──╲
-         ╱ RESTO ╲
-        ╱  = 0?  ╲
-       SI│        │NO
-         │        │
-    ╱────┴────╲ ╱┴────────╲
-   ╱Scrivi"Pari"╲╱Scrivi"Dispari"╲
-  ╱______________╲________________╲
-         │        │
-         └────┬───┘
-          ┌───┴───┐
-          │ FINE  │
-          └───────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Input[/Leggi N/]
+    Process[RESTO = N % 2]
+    Decision{RESTO = 0?}
+    OutputPari[/Scrivi 'Pari'/]
+    OutputDispari[/Scrivi 'Dispari'/]
+    End([FINE])
+    
+    Start --> Input
+    Input --> Process
+    Process --> Decision
+    Decision -->|SI| OutputPari
+    Decision -->|NO| OutputDispari
+    OutputPari --> End
+    OutputDispari --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input fill:#87CEEB
+    style Output fill:#87CEEB
+    style Process fill:#FFE4B5
+    style OutputPari fill:#87CEEB
+    style OutputDispari fill:#87CEEB
+    style Decision fill:#FFEB9C
 ```
 
 **1.3** Disegna il flow chart per trovare il maggiore tra due numeri.
 
 **Soluzione:**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-        ╱────┴────╲
-       ╱  Leggi A  ╲
-      ╱______________╲
-             │
-        ╱────┴────╲
-       ╱  Leggi B  ╲
-      ╱______________╲
-             │
-          ╱──┴──╲
-         ╱ A > B ╲
-        ╱____?____╲
-       SI│        │NO
-         │        │
-    ╱────┴────╲ ╱┴───────╲
-   ╱ Scrivi A  ╲╱ Scrivi B ╲
-  ╱______________╲___________╲
-         │        │
-         └────┬───┘
-          ┌───┴───┐
-          │ FINE  │
-          └───────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    InputA[/Leggi A/]
+    InputB[/Leggi B/]
+    Decision{A > B?}
+    OutputA[/Scrivi A/]
+    OutputB[/Scrivi B/]
+    End([FINE])
+    
+    Start --> InputA
+    InputA --> InputB
+    InputB --> Decision
+    Decision -->|SI| OutputA
+    Decision -->|NO| OutputB
+    OutputA --> End
+    OutputB --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style InputA fill:#87CEEB
+    style InputB fill:#87CEEB
+    style OutputA fill:#87CEEB
+    style OutputB fill:#87CEEB
+    style Decision fill:#FFEB9C
 ```
 
 ---
@@ -698,84 +691,70 @@ int main() {
 **2.1** Disegna il flow chart per stampare i numeri da 1 a 10.
 
 **Soluzione (con WHILE):**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-      ┌──────┴──────┐
-      │    I = 1    │
-      └──────┬──────┘
-             │
-      ┌──────┴──────┐◄──────┐
-      │      ●      │        │
-      └──────┬──────┘        │
-             │                │
-          ╱──┴──╲            │
-         ╱ I <= 10╲           │
-        ╱____?____╲          │
-       SI│        │NO        │
-         │        └──────┐   │
-    ╱────┴────╲         │   │
-   ╱ Scrivi I  ╲        │   │
-  ╱______________╲       │   │
-         │               │   │
-    ┌────┴────┐         │   │
-    │ I = I+1 │         │   │
-    └────┬────┘         │   │
-         └──────────────┘   │
-                            │
-                      ┌─────┴────┐
-                      │   FINE   │
-                      └──────────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Init[I = 1]
+    Conn((●))
+    Decision{I <= 10?}
+    Output[/Scrivi I/]
+    Increment[I = I + 1]
+    End([FINE])
+    
+    Start --> Init
+    Init --> Conn
+    Conn --> Decision
+    Decision -->|SI| Output
+    Decision -->|NO| End
+    Output --> Increment
+    Increment --> Conn
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Init fill:#FFE4B5
+    style Output fill:#87CEEB
+    style Increment fill:#FFE4B5
+    style Decision fill:#FFEB9C
+    style Conn fill:#DDA0DD
 ```
 
 **2.2** Disegna il flow chart per calcolare la somma dei primi N numeri naturali.
 
 **Soluzione:**
-```
-        ┌─────────┐
-        │ INIZIO  │
-        └────┬────┘
-             │
-        ╱────┴────╲
-       ╱  Leggi N  ╲
-      ╱______________╲
-             │
-      ┌──────┴──────┐
-      │  SOMMA = 0  │
-      └──────┬──────┘
-             │
-      ┌──────┴──────┐
-      │    I = 1    │
-      └──────┬──────┘
-             │
-      ┌──────┴──────┐◄──────┐
-      │      ●      │        │
-      └──────┬──────┘        │
-             │                │
-          ╱──┴──╲            │
-         ╱  I <=  ╲           │
-        ╱    N     ╲          │
-       SI│   ?      │NO       │
-         │          └────┐    │
-    ┌────┴────┐         │    │
-    │SOMMA=   │         │    │
-    │SOMMA+I  │         │    │
-    └────┬────┘         │    │
-         │              │    │
-    ┌────┴────┐         │    │
-    │ I = I+1 │         │    │
-    └────┬────┘         │    │
-         └──────────────┘    │
-                             │
-                        ╱────┴────╲
-                       ╱Scrivi SOMMA╲
-                      ╱______________╲
-                             │
-                        ┌────┴────┐
-                        │  FINE   │
-                        └─────────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Input[/Leggi N/]
+    InitSum[SOMMA = 0]
+    InitI[I = 1]
+    Conn((●))
+    Decision{I <= N?}
+    Process[SOMMA = SOMMA + I]
+    Increment[I = I + 1]
+    Output[/Scrivi SOMMA/]
+    End([FINE])
+    
+    Start --> Input
+    Input --> InitSum
+    InitSum --> InitI
+    InitI --> Conn
+    Conn --> Decision
+    Decision -->|SI| Process
+    Decision -->|NO| Output
+    Process --> Increment
+    Increment --> Conn
+    Output --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input fill:#87CEEB
+    style Output fill:#87CEEB
+    style InitSum fill:#FFE4B5
+    style InitI fill:#FFE4B5
+    style Process fill:#FFE4B5
+    style Increment fill:#FFE4B5
+    style Decision fill:#FFEB9C
+    style Conn fill:#DDA0DD
 ```
 
 ---
@@ -783,6 +762,114 @@ int main() {
 #### Esercizio 3: Pseudocodice (30 min)
 
 **3.1** Scrivi lo pseudocodice per calcolare l'area di un cerchio.
+
+**Soluzione:**
+```
+INIZIO
+    COSTANTE PI = 3.14159
+    LEGGI raggio
+    area ← PI * raggio * raggio
+    SCRIVI area
+FINE
+```
+
+**3.2** Scrivi lo pseudocodice per determinare se un anno è bisestile.
+
+**Soluzione:**
+```
+INIZIO
+    LEGGI anno
+    SE (anno % 400 = 0) ALLORA
+        SCRIVI "Bisestile"
+    ALTRIMENTI SE (anno % 100 = 0) ALLORA
+        SCRIVI "Non bisestile"
+    ALTRIMENTI SE (anno % 4 = 0) ALLORA
+        SCRIVI "Bisestile"
+    ALTRIMENTI
+        SCRIVI "Non bisestile"
+    FINE SE
+FINE
+```
+
+**3.3** Scrivi lo pseudocodice per calcolare il fattoriale di un numero.
+
+**Soluzione:**
+```
+INIZIO
+    LEGGI n
+    SE n < 0 ALLORA
+        SCRIVI "Errore: numero negativo"
+    ALTRIMENTI
+        fattoriale ← 1
+        i ← 1
+        MENTRE i <= n FARE
+            fattoriale ← fattoriale * i
+            i ← i + 1
+        FINE MENTRE
+        SCRIVI fattoriale
+    FINE SE
+FINE
+```
+
+**3.4** Scrivi lo pseudocodice per trovare il minimo in una sequenza di N numeri.
+
+**Soluzione:**
+```
+INIZIO
+    LEGGI n
+    LEGGI primo_numero
+    minimo ← primo_numero
+    
+    PER i DA 2 A n FARE
+        LEGGI numero
+        SE numero < minimo ALLORA
+            minimo ← numero
+        FINE SE
+    FINE PER
+    
+    SCRIVI minimo
+FINE
+```
+
+---
+
+#### Esercizio 4: Traduzione Flow Chart → Pseudocodice (30 min)
+
+**4.1** Dato il seguente flow chart, scrivi il corrispondente pseudocodice.
+
+Flow Chart: Tabellina di un numero
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    Input[/Leggi N/]
+    InitI[I = 1]
+    Conn((●))
+    Decision{I <= 10?}
+    Process[RIS = N × I]
+    Output[/Scrivi RIS/]
+    Increment[I = I + 1]
+    End([FINE])
+    
+    Start --> Input
+    Input --> InitI
+    InitI --> Conn
+    Conn --> Decision
+    Decision -->|SI| Process
+    Decision -->|NO| End
+    Process --> Output
+    Output --> Increment
+    Increment --> Conn
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input fill:#87CEEB
+    style Output fill:#87CEEB
+    style InitI fill:#FFE4B5
+    style Process fill:#FFE4B5
+    style Increment fill:#FFE4B5
+    style Decision fill:#FFEB9C
+    style Conn fill:#DDA0DD
+```
 
 **Soluzione:**
 ```
@@ -800,22 +887,47 @@ FINE
 **4.2** Scrivi il pseudocodice per il seguente flow chart che conta i numeri positivi.
 
 Flow Chart: Contare quanti numeri positivi in una sequenza di N numeri
-```
-[INIZIO] → [Leggi N] → [CONT=0] → [I=1] → ●→ <I<=N?> NO → [Scrivi CONT] → [FINE]
-                                            ↑       SI
-                                            │       ↓
-                                            │   [Leggi NUM]
-                                            │       ↓
-                                            │   <NUM>0?> NO─┐
-                                            │     SI        │
-                                            │     ↓         │
-                                            │ [CONT=CONT+1] │
-                                            │     ↓         │
-                                            │     ├─────────┘
-                                            │     ↓
-                                            │  [I=I+1]
-                                            │     ↓
-                                            └─────┘
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    InputN[/Leggi N/]
+    InitCont[CONT = 0]
+    InitI[I = 1]
+    Conn((●))
+    Decision1{I <= N?}
+    InputNum[/Leggi NUM/]
+    Decision2{NUM > 0?}
+    IncrCont[CONT = CONT + 1]
+    IncrI[I = I + 1]
+    Output[/Scrivi CONT/]
+    End([FINE])
+    
+    Start --> InputN
+    InputN --> InitCont
+    InitCont --> InitI
+    InitI --> Conn
+    Conn --> Decision1
+    Decision1 -->|SI| InputNum
+    Decision1 -->|NO| Output
+    InputNum --> Decision2
+    Decision2 -->|SI| IncrCont
+    Decision2 -->|NO| IncrI
+    IncrCont --> IncrI
+    IncrI --> Conn
+    Output --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style InputN fill:#87CEEB
+    style InputNum fill:#87CEEB
+    style Output fill:#87CEEB
+    style InitCont fill:#FFE4B5
+    style InitI fill:#FFE4B5
+    style IncrCont fill:#FFE4B5
+    style IncrI fill:#FFE4B5
+    style Decision1 fill:#FFEB9C
+    style Decision2 fill:#FFEB9C
+    style Conn fill:#DDA0DD
 ```
 
 **Soluzione:**
@@ -935,12 +1047,28 @@ FINE
 **7.1** Il seguente flow chart ha degli errori logici. Individuali e correggili.
 
 **Flow Chart Errato: Somma numeri positivi**
-```
-[INIZIO] → [SOMMA=0] → [Leggi N] → <N>0?> SI → [SOMMA=SOMMA+N] → [FINE]
-                                      NO↓
-                                    [Leggi N]
-                                        ↑
-                                        └────┘ (ciclo infinito!)
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    InitSum[SOMMA = 0]
+    Input[/Leggi N/]
+    Decision{N > 0?}
+    Process[SOMMA = SOMMA + N]
+    End([FINE])
+    
+    Start --> InitSum
+    InitSum --> Input
+    Input --> Decision
+    Decision -->|SI| Process
+    Decision -->|NO| Input
+    Process --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Input fill:#87CEEB
+    style InitSum fill:#FFE4B5
+    style Process fill:#FFE4B5
+    style Decision fill:#FFEB9C
 ```
 
 **Problemi:**
@@ -949,22 +1077,47 @@ FINE
 3. Non si sa quanti numeri leggere
 
 **Versione Corretta:**
-```
-[INIZIO] → [SOMMA=0] → [Leggi QUANTI] → [I=1] → ●
-                                                  ↓
-                                              <I<=QUANTI?> NO → [Scrivi SOMMA] → [FINE]
-                                                SI↓
-                                              [Leggi N]
-                                                  ↓
-                                              <N>0?> NO─┐
-                                                SI↓     │
-                                          [SOMMA=SOMMA+N]│
-                                                ↓        │
-                                                ├────────┘
-                                                ↓
-                                             [I=I+1]
-                                                ↓
-                                                ●
+```mermaid
+flowchart TD
+    Start([INIZIO])
+    InitSum[SOMMA = 0]
+    InputQuanti[/Leggi QUANTI/]
+    InitI[I = 1]
+    Conn((●))
+    Decision1{I <= QUANTI?}
+    InputN[/Leggi N/]
+    Decision2{N > 0?}
+    Process[SOMMA = SOMMA + N]
+    IncrI[I = I + 1]
+    Output[/Scrivi SOMMA/]
+    End([FINE])
+    
+    Start --> InitSum
+    InitSum --> InputQuanti
+    InputQuanti --> InitI
+    InitI --> Conn
+    Conn --> Decision1
+    Decision1 -->|SI| InputN
+    Decision1 -->|NO| Output
+    InputN --> Decision2
+    Decision2 -->|SI| Process
+    Decision2 -->|NO| IncrI
+    Process --> IncrI
+    IncrI --> Conn
+    Output --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style InputQuanti fill:#87CEEB
+    style InputN fill:#87CEEB
+    style Output fill:#87CEEB
+    style InitSum fill:#FFE4B5
+    style InitI fill:#FFE4B5
+    style Process fill:#FFE4B5
+    style IncrI fill:#FFE4B5
+    style Decision1 fill:#FFEB9C
+    style Decision2 fill:#FFEB9C
+    style Conn fill:#DDA0DD
 ```
 
 **7.2** Correggi il seguente pseudocodice che dovrebbe calcolare la media di N numeri:
@@ -1094,12 +1247,12 @@ Porta con te:
 1. Chiede all'utente quanti numeri vuole inserire (N)
 2. Legge N numeri
 3. Calcola e visualizza:
-   - La somma di tutti i numeri
-   - La media
-   - Il numero più grande
-   - Il numero più piccolo
-   - Quanti numeri sono pari
-   - Quanti numeri sono dispari
+    - La somma di tutti i numeri
+    - La media
+    - Il numero più grande
+    - Il numero più piccolo
+    - Quanti numeri sono pari
+    - Quanti numeri sono dispari
 
 Questo esercizio riassume tutti i costrutti visti oggi!
 
@@ -1122,92 +1275,4 @@ Questo esercizio riassume tutti i costrutti visti oggi!
 
 ---
 
-**Buon lavoro e ci vediamo alla prossima lezione!** 🚀COSTANTE PI = 3.14159
-    LEGGI raggio
-    area ← PI * raggio * raggio
-    SCRIVI area
-FINE
-```
-
-**3.2** Scrivi lo pseudocodice per determinare se un anno è bisestile.
-
-**Soluzione:**
-```
-INIZIO
-    LEGGI anno
-    SE (anno % 400 = 0) ALLORA
-        SCRIVI "Bisestile"
-    ALTRIMENTI SE (anno % 100 = 0) ALLORA
-        SCRIVI "Non bisestile"
-    ALTRIMENTI SE (anno % 4 = 0) ALLORA
-        SCRIVI "Bisestile"
-    ALTRIMENTI
-        SCRIVI "Non bisestile"
-    FINE SE
-FINE
-```
-
-**3.3** Scrivi lo pseudocodice per calcolare il fattoriale di un numero.
-
-**Soluzione:**
-```
-INIZIO
-    LEGGI n
-    SE n < 0 ALLORA
-        SCRIVI "Errore: numero negativo"
-    ALTRIMENTI
-        fattoriale ← 1
-        i ← 1
-        MENTRE i <= n FARE
-            fattoriale ← fattoriale * i
-            i ← i + 1
-        FINE MENTRE
-        SCRIVI fattoriale
-    FINE SE
-FINE
-```
-
-**3.4** Scrivi lo pseudocodice per trovare il minimo in una sequenza di N numeri.
-
-**Soluzione:**
-```
-INIZIO
-    LEGGI n
-    LEGGI primo_numero
-    minimo ← primo_numero
-    
-    PER i DA 2 A n FARE
-        LEGGI numero
-        SE numero < minimo ALLORA
-            minimo ← numero
-        FINE SE
-    FINE PER
-    
-    SCRIVI minimo
-FINE
-```
-
----
-
-#### Esercizio 4: Traduzione Flow Chart → Pseudocodice (30 min)
-
-**4.1** Dato il seguente flow chart, scrivi il corrispondente pseudocodice.
-
-Flow Chart: Tabellina di un numero
-```
-[INIZIO] → [Leggi N] → [I=1] → ●→ <I<=10?> NO → [FINE]
-                                ↑       SI
-                                │       ↓
-                                │  [RIS=N*I]
-                                │       ↓
-                                │  [Scrivi RIS]
-                                │       ↓
-                                │   [I=I+1]
-                                │       ↓
-                                └───────┘
-```
-
-**Soluzione:**
-```
-INIZIO
-    
+**Buon lavoro e ci vediamo alla prossima lezione!** 🚀
