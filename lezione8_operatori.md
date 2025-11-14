@@ -1,21 +1,1000 @@
-    if (b != 0) {
+# LEZIONE 8 - Operatori ed Espressioni
+**Durata: 4 ore | Teoria: 2h | Esercizi: 2h**
+
+---
+
+## PARTE TEORICA (2 ore)
+
+### 8.1 Introduzione agli Operatori (10 min)
+
+#### Cos'è un Operatore?
+
+Un **operatore** è un simbolo che indica un'operazione da eseguire su uno o più **operandi**.
+
+**Esempio:**
+```c
+int risultato = 5 + 3;
+//              ↑ ↑ ↑
+//              │ │ └── operando 2
+//              │ └──── operatore
+//              └────── operando 1
+```
+
+#### Classificazione per Numero di Operandi
+
+**1. Operatori Unari** (1 operando)
+```c
+-x      // negazione
+++x     // incremento
+!x      // NOT logico
+```
+
+**2. Operatori Binari** (2 operandi)
+```c
+a + b   // addizione
+a > b   // maggiore di
+a && b  // AND logico
+```
+
+**3. Operatori Ternari** (3 operandi)
+```c
+condizione ? valore_se_vero : valore_se_falso
+```
+
+#### Classificazione per Tipo di Operazione
+
+- **Aritmetici**: +, -, *, /, %
+- **Relazionali**: <, >, <=, >=, ==, !=
+- **Logici**: &&, ||, !
+- **Bitwise**: &, |, ^, ~, <<, >>
+- **Assegnazione**: =, +=, -=, *=, /=, %=
+- **Incremento/Decremento**: ++, --
+- **Altro**: sizeof, ternario (?:), virgola (,)
+
+---
+
+### 8.2 Operatori Aritmetici (esempi e note)
+
+#### Operatori Base
+
+**1. Addizione (+)**
+```c
+int a = 5 + 3;           // 8
+float b = 2.5 + 1.3;     // 3.8
+int c = -10 + 15;        // 5
+```
+
+**2. Sottrazione (-)**
+```c
+int a = 10 - 3;          // 7
+float b = 5.5 - 2.3;     // 3.2
+int c = 0 - 5;           // -5
+```
+
+**3. Moltiplicazione (*)**
+```c
+int a = 4 * 3;           // 12
+float b = 2.5 * 4.0;     // 10.0
+int c = -3 * 5;          // -15
+```
+
+**4. Divisione (/)**
+```c
+int a = 10 / 3;          // 3 (divisione intera!)
+float b = 10.0 / 3.0;    // 3.333...
+float c = 10.0 / 3;      // 3.333... (uno float basta)
+int d = 10 / 0;          // ERRORE! Undefined behavior
+```
+
+**IMPORTANTE: Divisione intera vs reale**
+```c
+int x = 7, y = 2;
+
+int r1 = x / y;           // 3 (troncamento)
+float r2 = x / y;         // 3.0 (divisione intera, poi convertito)
+float r3 = (float)x / y;  // 3.5 (divisione reale) ✓
+```
+
+**5. Modulo (%) - Resto della Divisione**
+```c
+int a = 10 % 3;          // 1 (10 = 3*3 + 1)
+int b = 15 % 4;          // 3 (15 = 4*3 + 3)
+int c = 20 % 5;          // 0 (divisione esatta)
+int d = 7 % 2;           // 1 (pari=0, dispari=1)
+
+// float e = 10.5 % 3.2; // ERRORE! % solo per interi
+```
+
+**Usi pratici del modulo:**
+```c
+// Verificare se pari/dispari
+if (n % 2 == 0) {
+    printf("Pari\n");
+}
+
+// Ciclare array (wraparound)
+int indice = (i + 1) % array_size;
+
+// Estrarre ultima cifra
+int ultima_cifra = numero % 10;
+
+// Estrarre cifre
+int centinaia = numero / 100;
+int decine = (numero / 10) % 10;
+int unita = numero % 10;
+```
+
+#### Operatori Unari
+
+**Negazione (-)**
+```c
+int x = 5;
+int y = -x;      // -5
+int z = -(-x);   // 5
+```
+
+**Positivo (+)** (raramente usato)
+```c
+int x = +5;      // equivalente a: int x = 5;
+```
+
+#### Esempi Completi
+
+**Esempio 1: Calcolo media**
+```c
+int voto1 = 8, voto2 = 7, voto3 = 9;
+float media = (voto1 + voto2 + voto3) / 3.0;  // 8.0
+// Nota: 3.0 per divisione reale!
+```
+
+**Esempio 2: Conversione ore**
+```c
+int secondi_totali = 3665;
+int ore = secondi_totali / 3600;      // 1
+int minuti = (secondi_totali % 3600) / 60;  // 1
+int secondi = secondi_totali % 60;    // 5
+// Risultato: 1h 1m 5s
+```
+
+**Esempio 3: Scambio senza variabile temporanea**
+```c
+int a = 5, b = 3;
+a = a + b;  // a = 8
+b = a - b;  // b = 5
+a = a - b;  // a = 3
+// Ora: a = 3, b = 5
+```
+
+---
+
+### 8.3 Incremento/Decremento
+
+#### Incremento (++)
+
+**Post-incremento (x++)**
+- Usa il valore PRIMA, poi incrementa
+```c
+int x = 5;
+int y = x++;  // y = 5, x = 6
+```
+
+**Pre-incremento (++x)**
+- Incrementa PRIMA, poi usa il valore
+```c
+int x = 5;
+int y = ++x;  // y = 6, x = 6
+```
+
+**Confronto:**
+```c
+int a = 5, b = 5;
+
+printf("%d\n", a++);  // Stampa: 5, poi a diventa 6
+printf("%d\n", a);    // Stampa: 6
+
+printf("%d\n", ++b);  // b diventa 6, poi stampa: 6
+printf("%d\n", b);    // Stampa: 6
+```
+
+#### Decremento (--)
+
+**Post-decremento (x--)**
+```c
+int x = 5;
+int y = x--;  // y = 5, x = 4
+```
+
+**Pre-decremento (--x)**
+```c
+int x = 5;
+int y = --x;  // y = 4, x = 4
+```
+
+#### Quando Usare Pre vs Post
+
+**In espressioni semplici, sono equivalenti:**
+```c
+x++;    // Incrementa x
+++x;    // Incrementa x (stesso effetto)
+```
+
+**In espressioni complesse, differiscono:**
+```c
+int i = 0;
+int array[10];
+
+array[i++] = 5;  // array[0] = 5, poi i diventa 1
+array[++i] = 7;  // i diventa 2, poi array[2] = 7
+```
+
+**Nei cicli (anticipazione):**
+```c
+// Equivalenti:
+for (i = 0; i < 10; i++)   // ...
+for (i = 0; i < 10; ++i)   // ...
+
+// Preferenza: ++i (leggermente più efficiente in C++)
+```
+
+#### Errori Comuni
+
+**ERRORE: Usare ++ su espressioni**
+```c
+int x = 5, y = 3;
+(x + y)++;     // ERRORE! Non è un l-value
+++(x + y);     // ERRORE!
+```
+
+**ERRORE: Doppio incremento**
+```c
+int x = 5;
+int y = x++ + ++x;  // UNDEFINED BEHAVIOR! Evitare!
+```
+
+**Best Practice:**
+- Usa ++ e -- su righe separate quando possibile
+- Evita espressioni complesse con effetti collaterali
+- In caso di dubbio, scrivi più chiaramente
+
+---
+
+### 8.4 Relazionali
+
+Gli operatori **relazionali** confrontano due valori e restituiscono **1** (vero) o **0** (falso).
+
+#### Operatori di Confronto
+
+**1. Uguale a (==)**
+```c
+int a = 5, b = 5, c = 3;
+int r1 = (a == b);  // 1 (vero)
+int r2 = (a == c);  // 0 (falso)
+```
+
+**ATTENZIONE:** Non confondere `==` (confronto) con `=` (assegnazione)!
+```c
+int x = 5;
+if (x = 10) {        // BUG! Assegna 10 a x, sempre vero
+    printf("Oops\n");
+}
+
+if (x == 10) {       // Corretto: confronta
+    printf("OK\n");
+}
+```
+
+**2. Diverso da (!=)**
+```c
+int a = 5, b = 3;
+int r = (a != b);    // 1 (vero, sono diversi)
+```
+
+**3. Maggiore di (>)**
+```c
+int a = 10, b = 5;
+int r = (a > b);     // 1 (vero)
+```
+
+**4. Minore di (<)**
+```c
+int a = 3, b = 7;
+int r = (a < b);     // 1 (vero)
+```
+
+**5. Maggiore o uguale (>=)**
+```c
+int a = 5, b = 5;
+int r1 = (a >= b);   // 1 (vero, sono uguali)
+int r2 = (a >= 3);   // 1 (vero, 5 >= 3)
+```
+
+**6. Minore o uguale (<=)**
+```c
+int a = 5, b = 10;
+int r = (a <= b);    // 1 (vero)
+```
+
+#### Comparazione con Float
+
+**PROBLEMA:** Float hanno errori di arrotondamento!
+```c
+float a = 0.1 + 0.2;
+float b = 0.3;
+
+if (a == b) {                     // Probabilmente FALSO!
+    printf("Uguali\n");
+}
+
+// SOLUZIONE: Usa epsilon (tolleranza)
+#include <math.h>
+#define EPSILON 0.00001
+
+if (fabs(a - b) < EPSILON) {      // Corretto
+    printf("Uguali (entro tolleranza)\n");
+}
+```
+
+#### Confronto Caratteri
+
+```c
+char c1 = 'A', c2 = 'B';
+
+if (c1 < c2) {  // Vero (confronta codici ASCII: 65 < 66)
+    printf("A viene prima di B\n");
+}
+
+// Controlli utili
+char ch = 'g';
+if (ch >= 'a' && ch <= 'z') {
+    printf("Lettera minuscola\n");
+}
+```
+
+#### Espressioni Relazionali
+
+```c
+int eta = 25;
+char tessera = 'S';  // S = ha tessera, N = no
+int prezzo_pieno = 10;
+
+// Sconto solo se: (età < 18 o età > 65) E ha tessera
+if ((eta < 18 || eta > 65) && tessera == 'S') {
+    int prezzo = prezzo_pieno / 2;
+    printf("Prezzo ridotto: %d€\n", prezzo);
+} else {
+    printf("Prezzo pieno: %d€\n", prezzo_pieno);
+}
+```
+
+---
+
+### 8.5 Logici
+
+Gli operatori **logici** combinano espressioni booleane.
+
+#### AND Logico (&&)
+
+**Vero solo se ENTRAMBI gli operandi sono veri.**
+
+**Tabella verità:**
+```
+A     B     A && B
+------------------------
+0     0       0
+0     1       0
+1     0       0
+1     1       1
+```
+
+**Esempi:**
+```c
+int a = 5, b = 10;
+
+if (a > 0 && b > 0) {            // Vero
+    printf("Entrambi positivi\n");
+}
+
+if (a > 0 && b < 5) {            // Falso (b < 5 è falso)
+    printf("Non stampato\n");
+}
+
+// Controllo range
+int x = 50;
+if (x >= 0 && x <= 100) {
+    printf("x è tra 0 e 100\n");
+}
+```
+
+**Short-circuit evaluation:**
+```c
+int x = 0;
+if (x != 0 && (10 / x) > 2) {    // Sicuro! Se x=0, non valuta 10/x
+    printf("OK\n");
+}
+```
+
+#### OR Logico (||)
+
+**Vero se ALMENO UNO degli operandi è vero.**
+
+**Tabella verità:**
+```
+A     B     A || B
+------------------------
+0     0       0
+0     1       1
+1     0       1
+1     1       1
+```
+
+**Esempi:**
+```c
+char ch = 'A';
+
+if (ch == 'a' || ch == 'A') {    // Vero
+    printf("È la lettera A\n");
+}
+
+// Controllo multiplo
+int giorno = 6;
+if (giorno == 6 || giorno == 7) {
+    printf("È weekend!\n");
+}
+
+// Validazione
+int voto = 110;
+if (voto < 0 || voto > 100) {
+    printf("Voto non valido\n");
+}
+```
+
+**Short-circuit:**
+```c
+if (x == 0 || (10 / x) > 2) {    // Se x=0, non valuta 10/x
+    printf("OK\n");
+}
+```
+
+#### NOT Logico (!)
+
+**Inverte il valore booleano.**
+
+**Tabella verità:**
+```
+A     !A
+-----------
+0      1
+1      0
+```
+
+**Esempi:**
+```c
+int x = 0;
+int y = !x;      // y = 1 (NOT di 0)
+
+int a = 5;
+int b = !a;      // b = 0 (NOT di qualsiasi numero != 0)
+
+// Verifica negativa
+if (!(x > 10)) {
+    printf("x NON è maggiore di 10\n");
+}
+
+// Equivalente a:
+if (x <= 10) {
+    printf("x è minore o uguale a 10\n");
+}
+```
+
+#### Combinazioni Complesse
+
+```c
+int eta = 25;
+char tessera = 'S';  // S = ha tessera, N = no
+int prezzo_pieno = 10;
+
+// Sconto solo se: (età < 18 o età > 65) E ha tessera
+if ((eta < 18 || eta > 65) && tessera == 'S') {
+    int prezzo = prezzo_pieno / 2;
+    printf("Prezzo ridotto: %d€\n", prezzo);
+} else {
+    printf("Prezzo pieno: %d€\n", prezzo_pieno);
+}
+```
+
+#### Leggi di De Morgan
+
+**Equivalenze utili:**
+```c
+!(A && B)  ≡  !A || !B
+!(A || B)  ≡  !A && !B
+
+// Esempio:
+// "Non è vero che piove E fa freddo"
+// equivale a:
+// "Non piove O non fa freddo"
+```
+
+#### Valori di Verità in C
+
+In C, **qualsiasi valore diverso da 0 è considerato vero**.
+
+```c
+int a = 5;
+if (a) {             // Vero! (5 != 0)
+    printf("a è vero\n");
+}
+
+int b = 0;
+if (b) {             // Falso
+    printf("Non stampato\n");
+}
+
+if (!b) {            // Vero! (NOT di 0)
+    printf("b è falso\n");
+}
+```
+
+---
+
+### 8.6 Assegnazione composta
+
+Gli operatori **composti** combinano operazione e assegnazione.
+
+#### Operatori Disponibili
+
+```c
++=   -=   *=   /=   %=   &=   |=   ^=   <<=   >>=
+```
+
+#### Esempi Base
+
+**Addizione composta (+=)**
+```c
+int x = 10;
+x += 5;      // Equivalente a: x = x + 5;
+// x = 15
+```
+
+**Sottrazione composta (-=)**
+```c
+int x = 20;
+x -= 3;      // Equivalente a: x = x - 3;
+// x = 17
+```
+
+**Moltiplicazione composta (*=)**
+```c
+int x = 4;
+x *= 3;      // Equivalente a: x = x * 3;
+// x = 12
+```
+
+**Divisione composta (/=)**
+```c
+int x = 20;
+x /= 4;      // Equivalente a: x = x / 4;
+// x = 5
+```
+
+**Modulo composto (%=)**
+```c
+int x = 17;
+x %= 5;      // Equivalente a: x = x % 5;
+// x = 2
+```
+
+#### Confronto Forme
+
+```c
+// Forma lunga
+x = x + 10;
+y = y * 2;
+z = z / 3;
+
+// Forma compatta (preferita)
+x += 10;
+y *= 2;
+z /= 3;
+```
+
+#### Vantaggi
+
+**1. Più conciso**
+```c
+lunghissimo_nome_variabile = lunghissimo_nome_variabile + 5;
+lunghissimo_nome_variabile += 5;  // Più leggibile
+```
+
+**2. Più efficiente (teoricamente)**
+```c
+array[funzione_complessa(x)] = array[funzione_complessa(x)] + 1;
+array[funzione_complessa(x)] += 1;  // Valuta indice una sola volta
+```
+
+**3. Meno errori**
+```c
+x = y + 1;    // Intendevi x = x + 1? Errore comune
+x += 1;       // Chiaro!
+```
+
+#### Esempi Pratici
+
+**Contatore:**
+```c
+int contatore = 0;
+contatore += 1;  // oppure: contatore++
+```
+
+**Accumulo:**
+```c
+float totale = 0.0;
+for (int i = 0; i < n; i++) {
+    totale += array[i];
+}
+```
+
+**Moltiplicazione per potenze di 2:**
+```c
+x = x << 3;  // x = x * 8  (più veloce di x *= 8)
+x = x >> 2;  // x = x / 4  (più veloce di x /= 4)
+```
+
+---
+
+### 8.7 Ternario
+
+L'**operatore ternario** (?:) è l'unico operatore con 3 operandi.
+
+#### Sintassi
+
+```c
+condizione ? valore_se_vero : valore_se_falso
+```
+
+#### Esempi Base
+
+**Assegnazione condizionale:**
+```c
+int a = 10, b = 20;
+int max = (a > b) ? a : b;   // max = 20
+
+// Equivalente a:
+int max;
+if (a > b) {
+    max = a;
+} else {
+    max = b;
+}
+```
+
+**In printf:**
+```c
+int eta = 17;
+printf("Sei %s\n", (eta >= 18) ? "maggiorenne" : "minorenne");
+```
+
+**Calcolo assoluto:**
+```c
+int x = -5;
+int abs_x = (x < 0) ? -x : x;  // abs_x = 5
+```
+
+#### Ternario Annidato
+
+**Possibile ma sconsigliato:**
+```c
+int voto = 85;
+char *valutazione = (voto >= 90) ? "Ottimo" :
+                    (voto >= 80) ? "Buono" :
+                    (voto >= 70) ? "Discreto" :
+                    (voto >= 60) ? "Sufficiente" : "Insufficiente";
+```
+
+**Meglio usare if-else per chiarezza:**
+```c
+if (voto >= 90) {
+    valutazione = "Ottimo";
+} else if (voto >= 80) {
+    valutazione = "Buono";
+} // ...
+```
+
+#### Quando Usare il Ternario
+
+**✓ BUONO (semplice, leggibile):**
+```c
+int max = (a > b) ? a : b;
+int segno = (x < 0) ? -1 : 1;
+printf("%d\n", (n % 2 == 0) ? 0 : 1);
+```
+
+**✗ CATTIVO (complesso, illeggibile):**
+```c
+int x = (a > b) ? (c > d) ? (e > f) ? 1 : 2 : 3 : 4;  // Confuso!
+```
+
+---
+
+### 8.8 Precedenza e Associatività
+
+La **precedenza** determina l'ordine di valutazione degli operatori.
+
+#### Tabella Precedenza (dal più alto al più basso)
+
+| Livello | Operatori | Descrizione | Associatività |
+|---------|-----------|-------------|---------------|
+| 1 | () [] . -> | Parentesi, accesso | L→R |
+| 2 | ! ~ ++ -- + - * & (cast) sizeof | Unari | R→L |
+| 3 | * / % | Moltiplicazione, divisione, modulo | L→R |
+| 4 | + - | Addizione, sottrazione | L→R |
+| 5 | << >> | Shift bit | L→R |
+| 6 | < <= > >= | Relazionali | L→R |
+| 7 | == != | Uguaglianza | L→R |
+| 8 | & | AND bitwise | L→R |
+| 9 | ^ | XOR bitwise | L→R |
+| 10 | \| | OR bitwise | L→R |
+| 11 | && | AND logico | L→R |
+| 12 | \|\| | OR logico | L→R |
+| 13 | ?: | Ternario | R→L |
+| 14 | = += -= *= /= %= etc. | Assegnazione | R→L |
+| 15 | , | Virgola | L→R |
+
+#### Esempi Precedenza
+
+**Aritmetica:**
+```c
+int x = 2 + 3 * 4;       // x = 14 (non 20!)
+// Equivalente a: 2 + (3 * 4)
+
+int y = 10 - 4 / 2;      // y = 8 (non 3!)
+// Equivalente a: 10 - (4 / 2)
+```
+
+**Con parentesi (override precedenza):**
+```c
+int x = (2 + 3) * 4;     // x = 20
+int y = (10 - 4) / 2;    // y = 3
+```
+
+**Relazionali e logici:**
+```c
+int a = 5, b = 10, c = 3;
+
+if (a < b && b > c) {    // OK: relazionali prima di &&
+    printf("Vero\n");
+}
+
+// Senza &&, avremmo bisogno di parentesi:
+int result = a < b > c;  // Confuso! Usa parentesi
+int result = (a < b) && (b > c);  // Chiaro
+```
+
+**Assegnazione:**
+```c
+int x, y, z;
+x = y = z = 5;           // Associatività R→L
+// Equivalente a: x = (y = (z = 5));
+```
+
+#### Associatività
+
+**Left-to-Right (L→R):**
+```c
+int x = 10 - 5 - 2;      // (10 - 5) - 2 = 3
+int y = 20 / 4 / 2;      // (20 / 4) / 2 = 2
+```
+
+**Right-to-Left (R→L):**
+```c
+int x = 5;
+x = x + 1;               // R→L per =
+// Non confondere con: (x = x) + 1
+
+int *p = &x;             // R→L per unari
+```
+
+#### Best Practices
+
+**1. Usa parentesi quando in dubbio:**
+```c
+// Poco chiaro
+if (a && b || c && d) { }
+
+// Chiaro
+if ((a && b) || (c && d)) { }
+```
+
+**2. Non affidarti troppo alla precedenza:**
+```c
+// Funziona ma poco leggibile
+int result = a * b + c / d - e;
+
+// Meglio
+int temp = b * c;
+int result = a + (temp / d) - (e % f);
+```
+
+**3. Una operazione per riga (quando complesso):**
+```c
+// Difficile
+int result = a * b + c / d - e;
+
+// Più chiaro
+int prod = a * b;
+int quo = c / d;
+int result = prod + quo - e;
+```
+
+---
+
+### 8.9 Bitwise (panoramica)
+
+Gli operatori **bitwise** lavorano sui singoli bit.
+
+#### Operatori Disponibili
+
+```c
+&    AND bitwise
+|    OR bitwise
+^    XOR bitwise (OR esclusivo)
+~    NOT bitwise (complemento)
+<<   Shift left
+>>   Shift right
+```
+
+#### AND Bitwise (&)
+
+Bit a bit: 1 solo se ENTRAMBI i bit sono 1.
+
+```c
+int a = 12;  // 1100
+int b = 10;  // 1010
+int c = a & b;  // 1000 = 8
+
+// Uso: mascherare bit
+int flags = 0b11010110;
+int bit3 = (flags & 0b00001000) != 0;  // Testa bit 3
+```
+
+#### OR Bitwise (|)
+
+Bit a bit: 1 se ALMENO UNO dei bit è 1.
+
+```c
+int a = 12;  // 1100
+int b = 10;  // 1010
+int c = a | b;  // 1110 = 14
+
+// Uso: settare bit
+flags = flags | 0b00001000;  // Setta bit 3
+// oppure: flags |= 0b00001000;
+```
+
+#### XOR Bitwise (^)
+
+Bit a bit: 1 se i bit sono DIVERSI.
+
+```c
+int a = 12;  // 1100
+int b = 10;  // 1010
+int c = a ^ b;  // 0110 = 6
+
+// Uso: toggle bit
+flags = flags ^ 0b00001000;  // Inverte bit 3
+
+// Swap senza variabile temp
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+```
+
+#### NOT Bitwise (~)
+
+Inverte tutti i bit (complemento a 1).
+
+```c
+int a = 12;   // 00001100 (8 bit)
+int b = ~a;   // 11110011 = -13 (complemento a 2)
+```
+
+#### Shift Left (<<)
+
+Sposta bit a sinistra (equivale a moltiplicare per 2ⁿ).
+
+```c
+int a = 5;      // 00000101
+int b = a << 1; // 00001010 = 10 (5 * 2)
+int c = a << 2; // 00010100 = 20 (5 * 4)
+```
+
+#### Shift Right (>>)
+
+Sposta bit a destra (equivale a dividere per 2ⁿ).
+
+```c
+int a = 20;     // 00010100
+int b = a >> 1; // 00001010 = 10 (20 / 2)
+int c = a >> 2; // 00000101 = 5  (20 / 4)
+```
+
+**Nota:** Con numeri signed negativi, >> può inserire 1 a sinistra (arithmetic shift) o 0 (logical shift) - dipende dall'implementazione.
+
+#### Applicazioni Pratiche
+
+**Moltiplicazione/divisione veloce per potenze di 2:**
+```c
+x = x << 3;  // x = x * 8  (più veloce di x *= 8)
+x = x >> 2;  // x = x / 4  (più veloce di x /= 4)
+```
+
+**Maschere e flag:**
+```c
+#define FLAG_A 0x01  // 00000001
+#define FLAG_B 0x02  // 00000010
+#define FLAG_C 0x04  // 00000100
+
+int flags = 0;
+flags |= FLAG_A;     // Setta FLAG_A
+flags |= FLAG_C;     // Setta FLAG_C
+
+if (flags & FLAG_A) {  // Testa FLAG_A
+    printf("FLAG_A è settato\n");
+}
+
+flags &= ~FLAG_A;    // Cancella FLAG_A
+```
+
+---
+
+## PARTE PRATICA (2 ore)
+
+### ESERCIZI GUIDATI
+
+#### Esercizio 1: Operatori Aritmetici (20 min)
+
+1.1 Calcolatrice completa (programma corretto e completo)
+
+```c
+#include <stdio.h>
+
+int main() {
+    float a, b;
+    
+    printf("Inserisci primo numero: ");
+    if (scanf("%f", &a) != 1) return 1;
+    
+    printf("Inserisci secondo numero: ");
+    if (scanf("%f", &b) != 1) return 1;
+    
+    printf("\n=== RISULTATI ===\n");
+    printf("%.2f + %.2f = %.2f\n", a, b, a + b);
+    printf("%.2f - %.2f = %.2f\n", a, b, a - b);
+    printf("%.2f × %.2f = %.2f\n", a, b, a * b);
+    
+    // Divisione con controllo per divisione per zero
+    if (b != 0.0f) {
         printf("%.2f ÷ %.2f = %.2f\n", a, b, a / b);
     } else {
         printf("%.2f ÷ %.2f = ERRORE (divisione per zero)\n", a, b);
     }
     
-    // Modulo (solo per interi)
-    int ia = (int)a;
-    int ib = (int)b;
-    if (ib != 0) {
-        printf("%d %% %d = %d\n", ia, ib, ia % ib);
+    // Modulo: solo per interi (mostriamo conversione esplicita)
+    {
+        int ia = (int)a;
+        int ib = (int)b;
+        if (ib != 0) {
+            printf("%d %% %d = %d\n", ia, ib, ia % ib);
+        } else {
+            printf("%d %% %d = ERRORE (divisione per zero)\n", ia, ib);
+        }
     }
     
     return 0;
 }
 ```
 
-**1.2** Conversione tempo:
+1.2 Conversione tempo:
 
 ```c
 #include <stdio.h>
@@ -44,7 +1023,7 @@ Inserisci secondi totali: 3725
 3725 secondi = 1 ore, 2 minuti, 5 secondi
 ```
 
-**1.3** Divisione intera vs reale:
+1.3 Divisione intera vs reale:
 
 ```c
 #include <stdio.h>
@@ -935,7 +1914,8 @@ max = (a > b) ? a : b;
 | | && | L→R |
 | | \|\| | L→R |
 | | ?: | R→L |
-| Più bassa | = += -= *= /= %= | R→L |
+| | = += -= *= /= %= | R→L |
+| Più bassa | , | L→R |
 
 ### Tabelle Verità
 
@@ -966,21 +1946,6 @@ A  !A
 
 ---
 
-## PUNTI CHIAVE DELLA LEZIONE
-
-✓ **Operatori aritmetici**: +, -, *, /, % (modulo solo interi)  
-✓ **Divisione intera**: int / int = int (tronca decimali)  
-✓ **++/--**: pre (prima modifica) vs post (dopo modifica)  
-✓ **Relazionali**: ==, !=, <, >, <=, >= (ritornano 0 o 1)  
-✓ **Logici**: && (AND), || (OR), ! (NOT)  
-✓ **Short-circuit**: && e || non valutano secondo operando se non necessario  
-✓ **Composti**: +=, -=, *= combinano operazione e assegnazione  
-✓ **Ternario**: cond ? val_vero : val_falso (operatore compatto)  
-✓ **Precedenza**: *, /, % prima di +, - (usa parentesi se dubbio)  
-✓ **Parentesi**: usale per chiarezza e per override precedenza
-
----
-
 ## PROBLEMI COMUNI E SOLUZIONI
 
 ### Problema 1: = invece di ==
@@ -998,9 +1963,6 @@ if (x == 10) {  // Corretto: confronto
     printf("OK\n");
 }
 ```
-
-**Prevenzione:** Alcuni preferiscono: `if (10 == x)`  
-Se scrivi `if (10 = x)` → errore compilazione!
 
 ### Problema 2: Divisione intera inaspettata
 
@@ -1228,1192 +2190,6 @@ Inserisci numero: 1234
 
 ## PREPARAZIONE PER LA PROSSIMA LEZIONE
 
-Nella prossima lezione studieremo:
-- **Costrutto if**: selezione semplice e binaria
-- **Istruzione if-else**: alternativa tra due percorsi
-- **If-else annidati**: decisioni multiple
-- **Istruzione switch**: selezione multipla
-- **Espressioni booleane complesse**
-- **Validazione input avanzata**
-
-Porta con te:
-- Esercizi homework completati
-- Domande su operatori o precedenza
-- Esempi di decisioni complesse (3+ condizioni)
-- Idee per programmi con scelte multiple
-
-**Verifica preparazione:**
-- Sai usare tutti gli operatori aritmetici?
-- Capisci differenza ++x e x++?
-- Sai quando usare && vs ||?
-- Conosci precedenza base degli operatori?
-- Sai fare cast per divisione reale?
-
----
-
-## RISORSE AGGIUNTIVE
-
-### Tool Online
-
-**Valutazione Espressioni:**
-- https://www.onlinegdb.com/online_c_compiler
-  Testa espressioni complesse
-
-**Operatori Bitwise:**
-- https://www.rapidtables.com/calc/math/binary-calculator.html
-  Calcolatrice binaria
-
-### Esercizi Interattivi
-
-- **HackerRank C**: Sfide su operatori
-- **LeetCode**: Problemi algoritmici
-- **Codewars**: Kata su bit manipulation
-
-### Best Practices Guide
-
-**Quando usare operatore ternario:**
-- ✓ Assegnazioni semplici
-- ✓ Dentro printf/return
-- ✗ Logica complessa
-- ✗ Con effetti collaterali
-
-**Quando usare operatori composti:**
-- ✓ Sempre (più chiari)
-- ✓ Quando variabile appare in entrambi lati
-
-**Parentesi:**
-- ✓ Usa sempre quando in dubbio
-- ✓ Per chiarezza (anche se non necessarie)
-- ✓ In espressioni miste (aritmetica + logica)
-
----
-
-## QUIZ DI AUTOVALUTAZIONE
-
-**Rispondi senza guardare gli appunti:**
-
-1. Cosa stampa: `printf("%d", 7 / 2);`?
-2. Differenza tra `x++` e `++x`?
-3. Cosa ritorna `5 % 2`?
-4. Quando `a && b` è vero?
-5. Cosa fa `x += 5`?
-6. Precedenza tra * e +?
-7. Cosa stampa: `printf("%d", !0);`?
-8. Perché `if (x = 5)` è sempre vero?
-9. Come confrontare due float?
-10. Cosa fa `x & (x-1)` per potenze di 2?
-
-**Risposte:**
-1. 3 (divisione intera)
-2. `x++` usa poi incrementa; `++x` incrementa poi usa
-3. 1 (resto di 5/2)
-4. Quando entrambi sono veri (≠ 0)
-5. Equivale a `x = x + 5`
-6. `*` ha precedenza maggiore di `+`
-7. 1 (NOT di 0 è 1)
-8. Assegna 5 a x (non confronta), 5 ≠ 0 quindi vero
-9. Con epsilon: `fabs(a - b) < EPSILON`
-10. Restituisce 0 (proprietà potenze di 2)
-
----
-
-## PATTERN COMUNI E IDIOMI
-
-### Pattern 1: Swap
-
-```c
-// Con variabile temporanea
-int temp = a;
-a = b;
-b = temp;
-
-// Con XOR (solo curiosità)
-a ^= b;
-b ^= a;
-a ^= b;
-
-// Con aritmetica (rischio overflow)
-a = a + b;
-b = a - b;
-a = a - b;
-```
-
-### Pattern 2: Min/Max
-
-```c
-int max = (a > b) ? a : b;
-int min = (a < b) ? a : b;
-
-// O con funzione macro
-#define MAX(a,b) ((a) > (b) ? (a) : (b))
-#define MIN(a,b) ((a) < (b) ? (a) : (b))
-```
-
-### Pattern 3: Clamp (limita range)
-
-```c
-// Forza valore tra min e max
-if (x < min) x = min;
-if (x > max) x = max;
-
-// O con ternario
-x = (x < min) ? min : (x > max) ? max : x;
-```
-
-### Pattern 4: Valore assoluto
-
-```c
-int abs_value = (x < 0) ? -x : x;
-
-// O con bit tricks (solo int)
-int abs = (x ^ (x >> 31)) - (x >> 31);
-```
-
-### Pattern 5: Segno di un numero
-
-```c
-int sign = (x > 0) - (x < 0);
-// Ritorna: 1 se positivo, -1 se negativo, 0 se zero
-```
-
-### Pattern 6: Pari/Dispari
-
-```c
-int is_even = (n % 2 == 0);
-int is_odd = (n % 2 != 0);
-
-// O con bitwise (più veloce)
-int is_even = !(n & 1);
-int is_odd = (n & 1);
-```
-
-### Pattern 7: Range check
-
-```c
-int in_range = (x >= min && x <= max);
-
-// Alternativa (solo se min e max costanti positive)
-int in_range = ((unsigned)(x - min) <= (max - min));
-```
-
----
-
-## PROGETTI SUGGERITI
-
-### Progetto 1: Calcolatore Espressioni Semplici
-
-Chiedi: "numero operatore numero"  
-Esempi: "10 + 5", "20 / 4", "7 % 3"  
-Valuta e stampa risultato.
-
-### Progetto 2: Gioco Quiz Matematico
-
-Genera operazioni casuali.  
-Utente deve rispondere.  
-Conta risposte giuste/sbagliate.  
-Mostra punteggio finale.
-
-### Progetto 3: Convertitore Unità Completo
-
-Menu con 10+ conversioni.  
-Lunghezza, peso, temperatura, valuta, etc.  
-Usa operatori aritmetici per formule.
-
-### Progetto 4: Analizzatore Numero Completo
-
-Input: un numero intero  
-Output:
-- Pari/dispari
-- Positivo/negativo/zero
-- Quadrato, cubo
-- Fattori (divisori)
-- Numero di cifre
-- Somma cifre
-- Cifre in ordine inverso
-- Primo o composto
-
-### Progetto 5: Sistema di Voto Ponderato
-
-Input: voti e crediti di N esami  
-Calcola media ponderata.  
-Usa operatori composti per accumulo.  
-Valida input (voti 18-30, crediti > 0).
-
----
-
-**Eccellente lavoro! Ora padroneggi tutti gli operatori C! 🚀**
-
 Nella prossima lezione useremo questi operatori dentro i **costrutti di selezione** (if, else, switch) per creare programmi che prendono decisioni complesse. È qui che i programmi diventano veramente intelligenti e interattivi!
 
-Gli operatori che hai imparato oggi sono gli **strumenti base** che userai in ogni singolo programma C che scriverai. Più pratichi, più diventeranno naturali come scrivere in italiano.# LEZIONE 8 - Operatori ed Espressioni
-**Durata: 4 ore | Teoria: 2h | Esercizi: 2h**
-
----
-
-## PARTE TEORICA (2 ore)
-
-### 8.1 Introduzione agli Operatori (10 min)
-
-#### Cos'è un Operatore?
-
-Un **operatore** è un simbolo che indica un'operazione da eseguire su uno o più **operandi**.
-
-**Esempio:**
-```c
-int risultato = 5 + 3;
-//              ↑ ↑ ↑
-//              │ │ └── operando 2
-//              │ └──── operatore
-//              └────── operando 1
-```
-
-#### Classificazione per Numero di Operandi
-
-**1. Operatori Unari** (1 operando)
-```c
--x      // negazione
-++x     // incremento
-!x      // NOT logico
-```
-
-**2. Operatori Binari** (2 operandi)
-```c
-a + b   // addizione
-a > b   // maggiore di
-a && b  // AND logico
-```
-
-**3. Operatori Ternari** (3 operandi)
-```c
-condizione ? valore_se_vero : valore_se_falso
-```
-
-#### Classificazione per Tipo di Operazione
-
-- **Aritmetici**: +, -, *, /, %
-- **Relazionali**: <, >, <=, >=, ==, !=
-- **Logici**: &&, ||, !
-- **Bitwise**: &, |, ^, ~, <<, >>
-- **Assegnazione**: =, +=, -=, *=, /=, %=
-- **Incremento/Decremento**: ++, --
-- **Altro**: sizeof, ternario (?:), virgola (,)
-
----
-
-### 8.2 Operatori Aritmetici (20 min)
-
-#### Operatori Base
-
-**1. Addizione (+)**
-```c
-int a = 5 + 3;           // 8
-float b = 2.5 + 1.3;     // 3.8
-int c = -10 + 15;        // 5
-```
-
-**2. Sottrazione (-)**
-```c
-int a = 10 - 3;          // 7
-float b = 5.5 - 2.3;     // 3.2
-int c = 0 - 5;           // -5
-```
-
-**3. Moltiplicazione (*)**
-```c
-int a = 4 * 3;           // 12
-float b = 2.5 * 4.0;     // 10.0
-int c = -3 * 5;          // -15
-```
-
-**4. Divisione (/)**
-```c
-int a = 10 / 3;          // 3 (divisione intera!)
-float b = 10.0 / 3.0;    // 3.333...
-float c = 10.0 / 3;      // 3.333... (uno float basta)
-int d = 10 / 0;          // ERRORE! Undefined behavior
-```
-
-**IMPORTANTE: Divisione intera vs reale**
-```c
-int x = 7, y = 2;
-
-int r1 = x / y;           // 3 (troncamento)
-float r2 = x / y;         // 3.0 (divisione intera, poi convertito)
-float r3 = (float)x / y;  // 3.5 (divisione reale) ✓
-```
-
-**5. Modulo (%) - Resto della Divisione**
-```c
-int a = 10 % 3;          // 1 (10 = 3*3 + 1)
-int b = 15 % 4;          // 3 (15 = 4*3 + 3)
-int c = 20 % 5;          // 0 (divisione esatta)
-int d = 7 % 2;           // 1 (pari=0, dispari=1)
-
-// float e = 10.5 % 3.2; // ERRORE! % solo per interi
-```
-
-**Usi pratici del modulo:**
-```c
-// Verificare se pari/dispari
-if (n % 2 == 0) {
-    printf("Pari\n");
-}
-
-// Ciclare array (wraparound)
-int indice = (i + 1) % array_size;
-
-// Estrarre ultima cifra
-int ultima_cifra = numero % 10;
-
-// Estrarre cifre
-int centinaia = numero / 100;
-int decine = (numero / 10) % 10;
-int unita = numero % 10;
-```
-
-#### Operatori Unari
-
-**Negazione (-)**
-```c
-int x = 5;
-int y = -x;      // -5
-int z = -(-x);   // 5
-```
-
-**Positivo (+)** (raramente usato)
-```c
-int x = +5;      // equivalente a: int x = 5;
-```
-
-#### Esempi Completi
-
-**Esempio 1: Calcolo media**
-```c
-int voto1 = 8, voto2 = 7, voto3 = 9;
-float media = (voto1 + voto2 + voto3) / 3.0;  // 8.0
-// Nota: 3.0 per divisione reale!
-```
-
-**Esempio 2: Conversione ore**
-```c
-int secondi_totali = 3665;
-int ore = secondi_totali / 3600;      // 1
-int minuti = (secondi_totali % 3600) / 60;  // 1
-int secondi = secondi_totali % 60;    // 5
-// Risultato: 1h 1m 5s
-```
-
-**Esempio 3: Scambio senza variabile temporanea**
-```c
-int a = 5, b = 3;
-a = a + b;  // a = 8
-b = a - b;  // b = 5
-a = a - b;  // a = 3
-// Ora: a = 3, b = 5
-```
-
----
-
-### 8.3 Operatori di Incremento e Decremento (15 min)
-
-#### Incremento (++)
-
-**Post-incremento (x++)**
-- Usa il valore PRIMA, poi incrementa
-```c
-int x = 5;
-int y = x++;  // y = 5, x = 6
-```
-
-**Pre-incremento (++x)**
-- Incrementa PRIMA, poi usa il valore
-```c
-int x = 5;
-int y = ++x;  // y = 6, x = 6
-```
-
-**Confronto:**
-```c
-int a = 5, b = 5;
-
-printf("%d\n", a++);  // Stampa: 5, poi a diventa 6
-printf("%d\n", a);    // Stampa: 6
-
-printf("%d\n", ++b);  // b diventa 6, poi stampa: 6
-printf("%d\n", b);    // Stampa: 6
-```
-
-#### Decremento (--)
-
-**Post-decremento (x--)**
-```c
-int x = 5;
-int y = x--;  // y = 5, x = 4
-```
-
-**Pre-decremento (--x)**
-```c
-int x = 5;
-int y = --x;  // y = 4, x = 4
-```
-
-#### Quando Usare Pre vs Post
-
-**In espressioni semplici, sono equivalenti:**
-```c
-x++;    // Incrementa x
-++x;    // Incrementa x (stesso effetto)
-```
-
-**In espressioni complesse, differiscono:**
-```c
-int i = 0;
-int array[10];
-
-array[i++] = 5;  // array[0] = 5, poi i diventa 1
-array[++i] = 7;  // i diventa 2, poi array[2] = 7
-```
-
-**Nei cicli (anticipazione):**
-```c
-// Equivalenti:
-for (i = 0; i < 10; i++)   // ...
-for (i = 0; i < 10; ++i)   // ...
-
-// Preferenza: ++i (leggermente più efficiente in C++)
-```
-
-#### Errori Comuni
-
-**ERRORE: Usare ++ su espressioni**
-```c
-int x = 5, y = 3;
-(x + y)++;     // ERRORE! Non è un l-value
-++(x + y);     // ERRORE!
-```
-
-**ERRORE: Doppio incremento**
-```c
-int x = 5;
-int y = x++ + ++x;  // UNDEFINED BEHAVIOR! Evitare!
-```
-
-**Best Practice:**
-- Usa ++ e -- su righe separate quando possibile
-- Evita espressioni complesse con effetti collaterali
-- In caso di dubbio, scrivi più chiaramente
-
----
-
-### 8.4 Operatori Relazionali (15 min)
-
-Gli operatori **relazionali** confrontano due valori e restituiscono **1** (vero) o **0** (falso).
-
-#### Operatori di Confronto
-
-**1. Uguale a (==)**
-```c
-int a = 5, b = 5, c = 3;
-int r1 = (a == b);  // 1 (vero)
-int r2 = (a == c);  // 0 (falso)
-```
-
-**ATTENZIONE:** Non confondere `==` (confronto) con `=` (assegnazione)!
-```c
-int x = 5;
-if (x = 10) {        // BUG! Assegna 10 a x, sempre vero
-    printf("Oops\n");
-}
-
-if (x == 10) {       // Corretto: confronta
-    printf("OK\n");
-}
-```
-
-**2. Diverso da (!=)**
-```c
-int a = 5, b = 3;
-int r = (a != b);    // 1 (vero, sono diversi)
-```
-
-**3. Maggiore di (>)**
-```c
-int a = 10, b = 5;
-int r = (a > b);     // 1 (vero)
-```
-
-**4. Minore di (<)**
-```c
-int a = 3, b = 7;
-int r = (a < b);     // 1 (vero)
-```
-
-**5. Maggiore o uguale (>=)**
-```c
-int a = 5, b = 5;
-int r1 = (a >= b);   // 1 (vero, sono uguali)
-int r2 = (a >= 3);   // 1 (vero, 5 >= 3)
-```
-
-**6. Minore o uguale (<=)**
-```c
-int a = 5, b = 10;
-int r = (a <= b);    // 1 (vero)
-```
-
-#### Comparazione con Float
-
-**PROBLEMA:** Float hanno errori di arrotondamento!
-```c
-float a = 0.1 + 0.2;
-float b = 0.3;
-
-if (a == b) {                     // Probabilmente FALSO!
-    printf("Uguali\n");
-}
-
-// SOLUZIONE: Usa epsilon (tolleranza)
-#include <math.h>
-#define EPSILON 0.00001
-
-if (fabs(a - b) < EPSILON) {      // Corretto
-    printf("Uguali (entro tolleranza)\n");
-}
-```
-
-#### Confronto Caratteri
-
-```c
-char c1 = 'A', c2 = 'B';
-
-if (c1 < c2) {  // Vero (confronta codici ASCII: 65 < 66)
-    printf("A viene prima di B\n");
-}
-
-// Controlli utili
-char ch = 'g';
-if (ch >= 'a' && ch <= 'z') {
-    printf("Lettera minuscola\n");
-}
-```
-
-#### Espressioni Relazionali
-
-```c
-int eta = 18;
-int voto = 65;
-
-int maggiorenne = (eta >= 18);           // 1
-int promosso = (voto >= 60);             // 1
-int lode = (voto >= 90);                 // 0
-int in_range = (voto >= 0 && voto <= 100);  // 1
-```
-
----
-
-### 8.5 Operatori Logici (20 min)
-
-Gli operatori **logici** combinano espressioni booleane.
-
-#### AND Logico (&&)
-
-**Vero solo se ENTRAMBI gli operandi sono veri.**
-
-**Tabella verità:**
-```
-A     B     A && B
-------------------------
-0     0       0
-0     1       0
-1     0       0
-1     1       1
-```
-
-**Esempi:**
-```c
-int a = 5, b = 10;
-
-if (a > 0 && b > 0) {            // Vero
-    printf("Entrambi positivi\n");
-}
-
-if (a > 0 && b < 5) {            // Falso (b < 5 è falso)
-    printf("Non stampato\n");
-}
-
-// Controllo range
-int x = 50;
-if (x >= 0 && x <= 100) {
-    printf("x è tra 0 e 100\n");
-}
-```
-
-**Short-circuit evaluation:**
-```c
-int x = 0;
-if (x != 0 && (10 / x) > 2) {    // Sicuro! Se x=0, non valuta 10/x
-    printf("OK\n");
-}
-```
-
-#### OR Logico (||)
-
-**Vero se ALMENO UNO degli operandi è vero.**
-
-**Tabella verità:**
-```
-A     B     A || B
-------------------------
-0     0       0
-0     1       1
-1     0       1
-1     1       1
-```
-
-**Esempi:**
-```c
-char ch = 'A';
-
-if (ch == 'a' || ch == 'A') {    // Vero
-    printf("È la lettera A\n");
-}
-
-// Controllo multiplo
-int giorno = 6;
-if (giorno == 6 || giorno == 7) {
-    printf("È weekend!\n");
-}
-
-// Validazione
-int voto = 110;
-if (voto < 0 || voto > 100) {
-    printf("Voto non valido\n");
-}
-```
-
-**Short-circuit:**
-```c
-if (x == 0 || (10 / x) > 2) {    // Se x=0, non valuta 10/x
-    printf("OK\n");
-}
-```
-
-#### NOT Logico (!)
-
-**Inverte il valore booleano.**
-
-**Tabella verità:**
-```
-A     !A
------------
-0      1
-1      0
-```
-
-**Esempi:**
-```c
-int x = 0;
-int y = !x;      // y = 1 (NOT di 0)
-
-int a = 5;
-int b = !a;      // b = 0 (NOT di qualsiasi numero != 0)
-
-// Verifica negativa
-if (!(x > 10)) {
-    printf("x NON è maggiore di 10\n");
-}
-
-// Equivalente a:
-if (x <= 10) {
-    printf("x è minore o uguale a 10\n");
-}
-```
-
-#### Combinazioni Complesse
-
-```c
-int eta = 25;
-char tessera = 'S';  // S = ha tessera, N = no
-int prezzo_pieno = 10;
-
-// Sconto solo se: (età < 18 o età > 65) E ha tessera
-if ((eta < 18 || eta > 65) && tessera == 'S') {
-    int prezzo = prezzo_pieno / 2;
-    printf("Prezzo ridotto: %d€\n", prezzo);
-} else {
-    printf("Prezzo pieno: %d€\n", prezzo_pieno);
-}
-```
-
-#### Leggi di De Morgan
-
-**Equivalenze utili:**
-```c
-!(A && B)  ≡  !A || !B
-!(A || B)  ≡  !A && !B
-
-// Esempio:
-// "Non è vero che piove E fa freddo"
-// equivale a:
-// "Non piove O non fa freddo"
-```
-
-#### Valori di Verità in C
-
-In C, **qualsiasi valore diverso da 0 è considerato vero**.
-
-```c
-int a = 5;
-if (a) {             // Vero! (5 != 0)
-    printf("a è vero\n");
-}
-
-int b = 0;
-if (b) {             // Falso
-    printf("Non stampato\n");
-}
-
-if (!b) {            // Vero! (NOT di 0)
-    printf("b è falso\n");
-}
-```
-
----
-
-### 8.6 Operatori di Assegnazione Composti (10 min)
-
-Gli operatori **composti** combinano operazione e assegnazione.
-
-#### Operatori Disponibili
-
-```c
-+=   -=   *=   /=   %=   &=   |=   ^=   <<=   >>=
-```
-
-#### Esempi Base
-
-**Addizione composta (+=)**
-```c
-int x = 10;
-x += 5;      // Equivalente a: x = x + 5;
-// x = 15
-```
-
-**Sottrazione composta (-=)**
-```c
-int x = 20;
-x -= 3;      // Equivalente a: x = x - 3;
-// x = 17
-```
-
-**Moltiplicazione composta (*=)**
-```c
-int x = 4;
-x *= 3;      // Equivalente a: x = x * 3;
-// x = 12
-```
-
-**Divisione composta (/=)**
-```c
-int x = 20;
-x /= 4;      // Equivalente a: x = x / 4;
-// x = 5
-```
-
-**Modulo composto (%=)**
-```c
-int x = 17;
-x %= 5;      // Equivalente a: x = x % 5;
-// x = 2
-```
-
-#### Confronto Forme
-
-```c
-// Forma lunga
-x = x + 10;
-y = y * 2;
-z = z / 3;
-
-// Forma compatta (preferita)
-x += 10;
-y *= 2;
-z /= 3;
-```
-
-#### Vantaggi
-
-**1. Più conciso**
-```c
-lunghissimo_nome_variabile = lunghissimo_nome_variabile + 5;
-lunghissimo_nome_variabile += 5;  // Più leggibile
-```
-
-**2. Più efficiente (teoricamente)**
-```c
-array[funzione_complessa(x)] = array[funzione_complessa(x)] + 1;
-array[funzione_complessa(x)] += 1;  // Valuta indice una sola volta
-```
-
-**3. Meno errori**
-```c
-x = y + 1;    // Intendevi x = x + 1? Errore comune
-x += 1;       // Chiaro!
-```
-
-#### Esempi Pratici
-
-**Contatore:**
-```c
-int contatore = 0;
-contatore += 1;  // oppure: contatore++
-```
-
-**Accumulo:**
-```c
-float totale = 0.0;
-for (int i = 0; i < n; i++) {
-    totale += array[i];
-}
-```
-
-**Moltiplicazione per potenze di 2:**
-```c
-int x = 5;
-x *= 2;   // x = 10
-x *= 2;   // x = 20
-```
-
----
-
-### 8.7 Operatore Ternario (10 min)
-
-L'**operatore ternario** (?:) è l'unico operatore con 3 operandi.
-
-#### Sintassi
-
-```c
-condizione ? valore_se_vero : valore_se_falso
-```
-
-#### Esempi Base
-
-**Assegnazione condizionale:**
-```c
-int a = 10, b = 20;
-int max = (a > b) ? a : b;   // max = 20
-
-// Equivalente a:
-int max;
-if (a > b) {
-    max = a;
-} else {
-    max = b;
-}
-```
-
-**In printf:**
-```c
-int eta = 17;
-printf("Sei %s\n", (eta >= 18) ? "maggiorenne" : "minorenne");
-```
-
-**Calcolo assoluto:**
-```c
-int x = -5;
-int abs_x = (x < 0) ? -x : x;  // abs_x = 5
-```
-
-#### Ternario Annidato
-
-**Possibile ma sconsigliato:**
-```c
-int voto = 85;
-char *valutazione = (voto >= 90) ? "Ottimo" :
-                    (voto >= 80) ? "Buono" :
-                    (voto >= 70) ? "Discreto" :
-                    (voto >= 60) ? "Sufficiente" : "Insufficiente";
-```
-
-**Meglio usare if-else per chiarezza:**
-```c
-if (voto >= 90) {
-    valutazione = "Ottimo";
-} else if (voto >= 80) {
-    valutazione = "Buono";
-} // ...
-```
-
-#### Quando Usare il Ternario
-
-**✓ BUONO (semplice, leggibile):**
-```c
-int max = (a > b) ? a : b;
-int segno = (x < 0) ? -1 : 1;
-printf("%d\n", (n % 2 == 0) ? 0 : 1);
-```
-
-**✗ CATTIVO (complesso, illeggibile):**
-```c
-int x = (a > b) ? (c > d) ? (e > f) ? 1 : 2 : 3 : 4;  // Confuso!
-```
-
----
-
-### 8.8 Precedenza e Associatività (15 min)
-
-La **precedenza** determina l'ordine di valutazione degli operatori.
-
-#### Tabella Precedenza (dal più alto al più basso)
-
-| Livello | Operatori | Descrizione | Associatività |
-|---------|-----------|-------------|---------------|
-| 1 | () [] . -> | Parentesi, accesso | L→R |
-| 2 | ! ~ ++ -- + - * & (cast) sizeof | Unari | R→L |
-| 3 | * / % | Moltiplicazione, divisione, modulo | L→R |
-| 4 | + - | Addizione, sottrazione | L→R |
-| 5 | << >> | Shift bit | L→R |
-| 6 | < <= > >= | Relazionali | L→R |
-| 7 | == != | Uguaglianza | L→R |
-| 8 | & | AND bitwise | L→R |
-| 9 | ^ | XOR bitwise | L→R |
-| 10 | \| | OR bitwise | L→R |
-| 11 | && | AND logico | L→R |
-| 12 | \|\| | OR logico | L→R |
-| 13 | ?: | Ternario | R→L |
-| 14 | = += -= *= /= %= etc. | Assegnazione | R→L |
-| 15 | , | Virgola | L→R |
-
-#### Esempi Precedenza
-
-**Aritmetica:**
-```c
-int x = 2 + 3 * 4;       // x = 14 (non 20!)
-// Equivalente a: 2 + (3 * 4)
-
-int y = 10 - 4 / 2;      // y = 8 (non 3!)
-// Equivalente a: 10 - (4 / 2)
-```
-
-**Con parentesi (override precedenza):**
-```c
-int x = (2 + 3) * 4;     // x = 20
-int y = (10 - 4) / 2;    // y = 3
-```
-
-**Relazionali e logici:**
-```c
-int a = 5, b = 10, c = 3;
-
-if (a < b && b > c) {    // OK: relazionali prima di &&
-    printf("Vero\n");
-}
-
-// Senza &&, avremmo bisogno di parentesi:
-int result = a < b > c;  // Confuso! Usa parentesi
-int result = (a < b) && (b > c);  // Chiaro
-```
-
-**Assegnazione:**
-```c
-int x, y, z;
-x = y = z = 5;           // Associatività R→L
-// Equivalente a: x = (y = (z = 5));
-```
-
-#### Associatività
-
-**Left-to-Right (L→R):**
-```c
-int x = 10 - 5 - 2;      // (10 - 5) - 2 = 3
-int y = 20 / 4 / 2;      // (20 / 4) / 2 = 2
-```
-
-**Right-to-Left (R→L):**
-```c
-int x = 5;
-x = x + 1;               // R→L per =
-// Non confondere con: (x = x) + 1
-
-int *p = &x;             // R→L per unari
-```
-
-#### Best Practices
-
-**1. Usa parentesi quando in dubbio:**
-```c
-// Poco chiaro
-if (a && b || c && d) { }
-
-// Chiaro
-if ((a && b) || (c && d)) { }
-```
-
-**2. Non affidarti troppo alla precedenza:**
-```c
-// Funziona ma poco leggibile
-int x = a + b * c / d - e % f;
-
-// Meglio
-int temp = b * c;
-int x = a + (temp / d) - (e % f);
-```
-
-**3. Una operazione per riga (quando complesso):**
-```c
-// Difficile
-int result = a * b + c / d - e;
-
-// Più chiaro
-int prod = a * b;
-int quo = c / d;
-int result = prod + quo - e;
-```
-
----
-
-### 8.9 Operatori Bitwise (Panoramica) (10 min)
-
-Gli operatori **bitwise** lavorano sui singoli bit.
-
-#### Operatori Disponibili
-
-```c
-&    AND bitwise
-|    OR bitwise
-^    XOR bitwise (OR esclusivo)
-~    NOT bitwise (complemento)
-<<   Shift left
->>   Shift right
-```
-
-#### AND Bitwise (&)
-
-Bit a bit: 1 solo se ENTRAMBI i bit sono 1.
-
-```c
-int a = 12;  // 1100
-int b = 10;  // 1010
-int c = a & b;  // 1000 = 8
-
-// Uso: mascherare bit
-int flags = 0b11010110;
-int bit3 = (flags & 0b00001000) != 0;  // Testa bit 3
-```
-
-#### OR Bitwise (|)
-
-Bit a bit: 1 se ALMENO UNO dei bit è 1.
-
-```c
-int a = 12;  // 1100
-int b = 10;  // 1010
-int c = a | b;  // 1110 = 14
-
-// Uso: settare bit
-flags = flags | 0b00001000;  // Setta bit 3
-// oppure: flags |= 0b00001000;
-```
-
-#### XOR Bitwise (^)
-
-Bit a bit: 1 se i bit sono DIVERSI.
-
-```c
-int a = 12;  // 1100
-int b = 10;  // 1010
-int c = a ^ b;  // 0110 = 6
-
-// Uso: toggle bit
-flags = flags ^ 0b00001000;  // Inverte bit 3
-
-// Swap senza variabile temp
-a = a ^ b;
-b = a ^ b;
-a = a ^ b;
-```
-
-#### NOT Bitwise (~)
-
-Inverte tutti i bit (complemento a 1).
-
-```c
-int a = 12;   // 00001100 (8 bit)
-int b = ~a;   // 11110011 = -13 (complemento a 2)
-```
-
-#### Shift Left (<<)
-
-Sposta bit a sinistra (equivale a moltiplicare per 2ⁿ).
-
-```c
-int a = 5;      // 00000101
-int b = a << 1; // 00001010 = 10 (5 * 2)
-int c = a << 2; // 00010100 = 20 (5 * 4)
-```
-
-#### Shift Right (>>)
-
-Sposta bit a destra (equivale a dividere per 2ⁿ).
-
-```c
-int a = 20;     // 00010100
-int b = a >> 1; // 00001010 = 10 (20 / 2)
-int c = a >> 2; // 00000101 = 5  (20 / 4)
-```
-
-**Nota:** Con numeri signed negativi, >> può inserire 1 a sinistra (arithmetic shift) o 0 (logical shift) - dipende dall'implementazione.
-
-#### Applicazioni Pratiche
-
-**Moltiplicazione/divisione veloce per potenze di 2:**
-```c
-x = x << 3;  // x = x * 8  (più veloce di x *= 8)
-x = x >> 2;  // x = x / 4  (più veloce di x /= 4)
-```
-
-**Maschere e flag:**
-```c
-#define FLAG_A 0x01  // 00000001
-#define FLAG_B 0x02  // 00000010
-#define FLAG_C 0x04  // 00000100
-
-int flags = 0;
-flags |= FLAG_A;     // Setta FLAG_A
-flags |= FLAG_C;     // Setta FLAG_C
-
-if (flags & FLAG_A) {  // Testa FLAG_A
-    printf("FLAG_A è settato\n");
-}
-
-flags &= ~FLAG_A;    // Cancella FLAG_A
-```
-
----
-
-## PARTE PRATICA (2 ore)
-
-### ESERCIZI GUIDATI
-
-#### Esercizio 1: Operatori Aritmetici (20 min)
-
-**1.1** Calcolatrice completa:
-
-```c
-#include <stdio.h>
-
-int main() {
-    float a, b;
-    
-    printf("Inserisci primo numero: ");
-    scanf("%f", &a);
-    
-    printf("Inserisci secondo numero: ");
-    scanf("%f", &b);
-    
-    printf("\n=== RISULTATI ===\n");
-    printf("%.2f + %.2f = %.2f\n", a, b, a + b);
-    printf("%.2f - %.2f = %.2f\n", a, b, a - b);
-    printf("%.2f × %.2f = %.2f\n", a, b, a * b);
-    
-    if (
+Gli operatori che hai imparato oggi sono gli **strumenti base** che userai in ogni singolo programma C che scriverai. Più pratichi, più diventeranno naturali come scrivere in italiano.

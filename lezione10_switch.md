@@ -893,88 +893,260 @@ int main() {
 
 int main() {
     int scelta;
-    
-    printf("=== MENU ===\n");
+    float a, b, risultato;
+
+    printf("=== MENU SEMPLICE ===\n");
     printf("1. Saluta\n");
-    printf("2. Conta\n");
+    printf("2. Esegui operazioni esempio (add, sub, mul)\n");
     printf("3. Esci\n");
-    printf("\nScelta: ");
-    scanf("%d", &scelta);
-    
+    printf("Scelta: ");
+    if (scanf("%d", &scelta) != 1) {
+        printf("Input non valido\n");
+        return 1;
+    }
+
     switch (scelta) {
         case 1:
-            printf("Primo numero: ");
-            scanf("%f", &a);
-            printf("Secondo numero: ");
-            scanf("%f", &b);
+            printf("Ciao, mondo!\n");
+            break;
+
+        case 2:
+            printf("Inserisci primo numero: ");
+            if (scanf("%f", &a) != 1) { printf("Input non valido\n"); return 1; }
+            printf("Inserisci secondo numero: ");
+            if (scanf("%f", &b) != 1) { printf("Input non valido\n"); return 1; }
+
+            printf("\n=== ESEMPI OPERAZIONI ===\n");
             risultato = a + b;
             printf("%.2f + %.2f = %.2f\n", a, b, risultato);
-            break;
-        
-        case 2:
-            printf("Primo numero: ");
-            scanf("%f", &a);
-            printf("Secondo numero: ");
-            scanf("%f", &b);
+
             risultato = a - b;
             printf("%.2f - %.2f = %.2f\n", a, b, risultato);
-            break;
-        
-        case 3:
-            printf("Primo numero: ");
-            scanf("%f", &a);
-            printf("Secondo numero: ");
-            scanf("%f", &b);
+
             risultato = a * b;
             printf("%.2f × %.2f = %.2f\n", a, b, risultato);
             break;
-        
-        case 4:
-            printf("Dividendo: ");
-            scanf("%f", &a);
-            printf("Divisore: ");
-            scanf("%f", &b);
-            if (b != 0) {
-                risultato = a / b;
-                printf("%.2f ÷ %.2f = %.2f\n", a, b, risultato);
-            } else {
-                printf("ERRORE: Divisione per zero!\n");
-            }
+
+        case 3:
+            printf("Uscita...\n");
             break;
-        
-        case 5:
-            printf("Base: ");
-            scanf("%f", &a);
-            printf("Esponente: ");
-            scanf("%f", &b);
-            risultato = pow(a, b);
-            printf("%.2f ^ %.2f = %.2f\n", a, b, risultato);
-            break;
-        
-        case 6:
-            printf("Numero: ");
-            scanf("%f", &a);
-            if (a >= 0) {
-                risultato = sqrt(a);
-                printf("√%.2f = %.2f\n", a, risultato);
-            } else {
-                printf("ERRORE: Radice di numero negativo!\n");
-            }
-            break;
-        
-        case 7:
-            printf("Numero: ");
-            scanf("%f", &a);
-            printf("Percentuale: ");
-            scanf("%f", &b);
-            risultato = (a * b) / 100;
-            printf("%.2f%% di %.2f = %.2f\n", b, a, risultato);
+
+        default:
+            printf("Scelta non valida\n");
+    }
+
+    return 0;
+}
+```
+
+#### Esercizio 2: Fall-through Intenzionale (20 min)
+
+**2.1** Vocali e consonanti:
+
+```c
+#include <stdio.h>
+
+int main() {
+    char lettera;
+    
+    printf("Inserisci una lettera: ");
+    scanf(" %c", &lettera);
+    
+    switch (lettera) {
+        case 'a': case 'A':
+        case 'e': case 'E':
+        case 'i': case 'I':
+        case 'o': case 'O':
+        case 'u': case 'U':
+            printf("'%c' è una VOCALE\n", lettera);
             break;
         
         default:
-            printf("Operazione non valida\n");
+            if ((lettera >= 'a' && lettera <= 'z') ||
+                (lettera >= 'A' && lettera <= 'Z')) {
+                printf("'%c' è una CONSONANTE\n", lettera);
+            } else {
+                printf("'%c' non è una lettera\n", lettera);
+            }
     }
     
+    return 0;
+}
+```
+
+**2.2** Giorni del mese:
+
+```c
+#include <stdio.h>
+
+int main() {
+    int mese;
+    int giorni;
+    
+    printf("Mese (1-12): ");
+    scanf("%d", &mese);
+    
+    switch (mese) {
+        case 1:  // Gennaio
+        case 3:  // Marzo
+        case 5:  // Maggio
+        case 7:  // Luglio
+        case 8:  // Agosto
+        case 10: // Ottobre
+        case 12: // Dicembre
+            giorni = 31;
+            break;
+        
+        case 4:  // Aprile
+        case 6:  // Giugno
+        case 9:  // Settembre
+        case 11: // Novembre
+            giorni = 30;
+            break;
+        
+        case 2:  // Febbraio
+            giorni = 28;  // Semplificato
+            break;
+        
+        default:
+            printf("Mese non valido\n");
+            return 1;
+    }
+    
+    printf("Il mese %d ha %d giorni\n", mese, giorni);
+    
+    return 0;
+}
+```
+
+**2.3** Classificazione carattere:
+
+```c
+#include <stdio.h>
+
+int main() {
+    char ch;
+    
+    printf("Inserisci carattere: ");
+    scanf(" %c", &ch);
+    
+    switch (ch) {
+        case '0': case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9':
+            printf("È una CIFRA\n");
+            break;
+        
+        case '+': case '-': case '*': case '/':
+            printf("È un OPERATORE\n");
+            break;
+        
+        case ' ': case '\t': case '\n':
+            printf("È uno SPAZIO BIANCO\n");
+            break;
+        
+        default:
+            if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
+                printf("È una LETTERA\n");
+            } else {
+                printf("È un SIMBOLO SPECIALE\n");
+            }
+    }
+    
+    return 0;
+}
+```
+
+---
+
+#### Esercizio 3: Calcolatore Avanzato (25 min)
+
+Sostituito blocco troncato con versione completa, usa math.h e gestisce input non valido e divisione per zero.
+
+```c
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    int scelta;
+    double a, b, risultato;
+
+    printf("=== CALCOLATRICE AVANZATA ===\n");
+    printf("1. Addizione\n");
+    printf("2. Sottrazione\n");
+    printf("3. Moltiplicazione\n");
+    printf("4. Divisione\n");
+    printf("5. Potenza (a^b)\n");
+    printf("6. Radice quadrata (√a)\n");
+    printf("7. Percentuale (b%% di a)\n");
+    printf("Scegli operazione (1-7): ");
+
+    if (scanf("%d", &scelta) != 1) {
+        printf("Input non valido\n");
+        return 1;
+    }
+
+    switch (scelta) {
+        case 1:
+            printf("Inserisci a e b: ");
+            if (scanf("%lf %lf", &a, &b) != 2) { printf("Input non valido\n"); return 1; }
+            risultato = a + b;
+            printf("%.6g + %.6g = %.6g\n", a, b, risultato);
+            break;
+
+        case 2:
+            printf("Inserisci a e b: ");
+            if (scanf("%lf %lf", &a, &b) != 2) { printf("Input non valido\n"); return 1; }
+            risultato = a - b;
+            printf("%.6g - %.6g = %.6g\n", a, b, risultato);
+            break;
+
+        case 3:
+            printf("Inserisci a e b: ");
+            if (scanf("%lf %lf", &a, &b) != 2) { printf("Input non valido\n"); return 1; }
+            risultato = a * b;
+            printf("%.6g × %.6g = %.6g\n", a, b, risultato);
+            break;
+
+        case 4:
+            printf("Inserisci dividendo e divisore: ");
+            if (scanf("%lf %lf", &a, &b) != 2) { printf("Input non valido\n"); return 1; }
+            if (b == 0.0) {
+                printf("ERRORE: Divisione per zero!\n");
+            } else {
+                risultato = a / b;
+                printf("%.6g ÷ %.6g = %.6g\n", a, b, risultato);
+            }
+            break;
+
+        case 5:
+            printf("Inserisci base e esponente: ");
+            if (scanf("%lf %lf", &a, &b) != 2) { printf("Input non valido\n"); return 1; }
+            risultato = pow(a, b);
+            printf("%.6g ^ %.6g = %.6g\n", a, b, risultato);
+            break;
+
+        case 6:
+            printf("Inserisci numero (a): ");
+            if (scanf("%lf", &a) != 1) { printf("Input non valido\n"); return 1; }
+            if (a < 0.0) {
+                printf("ERRORE: radice di numero negativo\n");
+            } else {
+                risultato = sqrt(a);
+                printf("√%.6g = %.6g\n", a, risultato);
+            }
+            break;
+
+        case 7:
+            printf("Inserisci valore e percentuale (a percent): ");
+            if (scanf("%lf %lf", &a, &b) != 2) { printf("Input non valido\n"); return 1; }
+            risultato = (a * b) / 100.0;
+            printf("%.6g%% di %.6g = %.6g\n", b, a, risultato);
+            break;
+
+        default:
+            printf("Operazione non valida\n");
+    }
+
     return 0;
 }
 ```
@@ -1682,6 +1854,7 @@ switch (x) {
 ```c
 switch (voto) {
     case 90-100:  // ❌ ERRORE! Sintassi non valida
+        printf("A\n");
         break;
 }
 ```
@@ -1689,8 +1862,11 @@ switch (voto) {
 **Soluzione:** Usa if-else o case multipli.
 ```c
 if (voto >= 90 && voto <= 100) {
-    // ...
+    printf("A\n");
+} else if (voto >= 80 && voto < 90) {
+    printf("B\n");
 }
+// ...
 ```
 
 ### Problema 4: Float in switch
@@ -1754,248 +1930,4 @@ Porta con te:
 
 **Eccellente! Ora padroneggi la selezione multipla! 🎯**
 
-Con if-else e switch hai tutti gli strumenti per gestire decisioni semplici e complesse. Nella prossima lezione aggiungeremo i **cicli** per ripetere operazioni, completando così i tre costrutti fondamentali della programmazione strutturata (sequenza, selezione, iterazione)!("Ciao, mondo!\n");
-            break;
-        case 2:
-            printf("1, 2, 3, 4, 5\n");
-            break;
-        case 3:
-            printf("Uscita...\n");
-            break;
-        default:
-            printf("Scelta non valida\n");
-    }
-    
-    return 0;
-}
-```
-
-**1.2** Giorni della settimana:
-
-```c
-#include <stdio.h>
-
-int main() {
-    int giorno;
-    
-    printf("Numero giorno (1-7): ");
-    scanf("%d", &giorno);
-    
-    printf("Giorno: ");
-    switch (giorno) {
-        case 1:
-            printf("Lunedì\n");
-            break;
-        case 2:
-            printf("Martedì\n");
-            break;
-        case 3:
-            printf("Mercoledì\n");
-            break;
-        case 4:
-            printf("Giovedì\n");
-            break;
-        case 5:
-            printf("Venerdì\n");
-            break;
-        case 6:
-            printf("Sabato\n");
-            break;
-        case 7:
-            printf("Domenica\n");
-            break;
-        default:
-            printf("Numero non valido\n");
-    }
-    
-    return 0;
-}
-```
-
-**1.3** Voti letterali:
-
-```c
-#include <stdio.h>
-
-int main() {
-    char voto;
-    
-    printf("Voto (A/B/C/D/F): ");
-    scanf(" %c", &voto);
-    
-    switch (voto) {
-        case 'A':
-        case 'a':
-            printf("Ottimo! (90-100)\n");
-            break;
-        case 'B':
-        case 'b':
-            printf("Buono! (80-89)\n");
-            break;
-        case 'C':
-        case 'c':
-            printf("Discreto! (70-79)\n");
-            break;
-        case 'D':
-        case 'd':
-            printf("Sufficiente! (60-69)\n");
-            break;
-        case 'F':
-        case 'f':
-            printf("Insufficiente! (<60)\n");
-            break;
-        default:
-            printf("Voto non riconosciuto\n");
-    }
-    
-    return 0;
-}
-```
-
----
-
-#### Esercizio 2: Fall-through Intenzionale (20 min)
-
-**2.1** Vocali e consonanti:
-
-```c
-#include <stdio.h>
-
-int main() {
-    char lettera;
-    
-    printf("Inserisci una lettera: ");
-    scanf(" %c", &lettera);
-    
-    switch (lettera) {
-        case 'a': case 'A':
-        case 'e': case 'E':
-        case 'i': case 'I':
-        case 'o': case 'O':
-        case 'u': case 'U':
-            printf("'%c' è una VOCALE\n", lettera);
-            break;
-        
-        default:
-            if ((lettera >= 'a' && lettera <= 'z') ||
-                (lettera >= 'A' && lettera <= 'Z')) {
-                printf("'%c' è una CONSONANTE\n", lettera);
-            } else {
-                printf("'%c' non è una lettera\n", lettera);
-            }
-    }
-    
-    return 0;
-}
-```
-
-**2.2** Giorni del mese:
-
-```c
-#include <stdio.h>
-
-int main() {
-    int mese;
-    int giorni;
-    
-    printf("Mese (1-12): ");
-    scanf("%d", &mese);
-    
-    switch (mese) {
-        case 1:  // Gennaio
-        case 3:  // Marzo
-        case 5:  // Maggio
-        case 7:  // Luglio
-        case 8:  // Agosto
-        case 10: // Ottobre
-        case 12: // Dicembre
-            giorni = 31;
-            break;
-        
-        case 4:  // Aprile
-        case 6:  // Giugno
-        case 9:  // Settembre
-        case 11: // Novembre
-            giorni = 30;
-            break;
-        
-        case 2:  // Febbraio
-            giorni = 28;  // Semplificato
-            break;
-        
-        default:
-            printf("Mese non valido\n");
-            return 1;
-    }
-    
-    printf("Il mese %d ha %d giorni\n", mese, giorni);
-    
-    return 0;
-}
-```
-
-**2.3** Classificazione carattere:
-
-```c
-#include <stdio.h>
-
-int main() {
-    char ch;
-    
-    printf("Inserisci carattere: ");
-    scanf(" %c", &ch);
-    
-    switch (ch) {
-        case '0': case '1': case '2': case '3': case '4':
-        case '5': case '6': case '7': case '8': case '9':
-            printf("È una CIFRA\n");
-            break;
-        
-        case '+': case '-': case '*': case '/':
-            printf("È un OPERATORE\n");
-            break;
-        
-        case ' ': case '\t': case '\n':
-            printf("È uno SPAZIO BIANCO\n");
-            break;
-        
-        default:
-            if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
-                printf("È una LETTERA\n");
-            } else {
-                printf("È un SIMBOLO SPECIALE\n");
-            }
-    }
-    
-    return 0;
-}
-```
-
----
-
-#### Esercizio 3: Calcolatore Avanzato (25 min)
-
-**3.1** Calcolatrice completa:
-
-```c
-#include <stdio.h>
-#include <math.h>
-
-int main() {
-    int scelta;
-    float a, b, risultato;
-    
-    printf("=== CALCOLATRICE ===\n");
-    printf("1. Addizione\n");
-    printf("2. Sottrazione\n");
-    printf("3. Moltiplicazione\n");
-    printf("4. Divisione\n");
-    printf("5. Potenza\n");
-    printf("6. Radice quadrata\n");
-    printf("7. Percentuale\n");
-    printf("\nScegli operazione: ");
-    scanf("%d", &scelta);
-    
-    switch (scelta) {
-        case 1:
-            printf
+Con if-else e switch hai tutti gli strumenti per gestire decisioni semplici e complesse. Nella prossima lezione aggiungeremo i **cicli** per ripetere operazioni, completando così i tre costrutti fondamentali della programmazione strutturata (sequenza, selezione, iterazione).

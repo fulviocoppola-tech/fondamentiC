@@ -925,16 +925,16 @@ int main() {
 }
 ```
 
-**2.3** Input float e double:
+**2.3** Input float e calcolo IMC:
 
 ```c
 #include <stdio.h>
 
 int main() {
-    float temperatura;
-    double distanza;
+    float peso, altezza, imc;
     
-    printf("Temperatura corporea (°C): ");
+    printf("=== CALCOLO IMC ===\n");
+    printf("Inserisci peso (kg): ");
     scanf("%f", &peso);
     
     printf("Inserisci altezza (m): ");
@@ -976,6 +976,30 @@ IMC: 22.9
 
 Classificazione:
 Normopeso
+```
+
+**2.4** Input carattere (con problema e soluzione):
+
+```c
+#include <stdio.h>
+
+int main() {
+    int numero;
+    char lettera;
+    
+    printf("Inserisci un numero: ");
+    scanf("%d", &numero);
+    
+    // PROBLEMA: scanf lascia '\n' nel buffer
+    printf("Inserisci una lettera: ");
+    scanf(" %c", &lettera);  // SOLUZIONE: spazio prima di %c
+    
+    printf("\nHai inserito:\n");
+    printf("Numero: %d\n", numero);
+    printf("Lettera: %c\n", lettera);
+    
+    return 0;
+}
 ```
 
 ---
@@ -1023,7 +1047,7 @@ Resto: 7 % 2 = 1
 
 ```c
 #include <stdio.h>
-#include <math.h>  // Per round(), floor(), ceil()
+#include <math.h>
 
 int main() {
     double pi = 3.14159;
@@ -1063,7 +1087,7 @@ Ceil: 4
 
 ```c
 #include <stdio.h>
-#include <limits.h>  // Per INT_MAX, INT_MIN
+#include <limits.h>
 
 int main() {
     printf("=== LIMITI INT ===\n");
@@ -1108,7 +1132,7 @@ min - 1 = 2147483647 (underflow!)
 
 int main() {
     char cifra = '7';
-    int numero = cifra - '0';  // Conversione char → int
+    int numero = cifra - '0';
     
     printf("Carattere: '%c'\n", cifra);
     printf("Codice ASCII: %d\n", cifra);
@@ -1118,7 +1142,7 @@ int main() {
     
     // Viceversa
     int val = 5;
-    char car = val + '0';  // Conversione int → char
+    char car = val + '0';
     
     printf("Numero: %d\n", val);
     printf("Carattere: '%c'\n", car);
@@ -1158,7 +1182,7 @@ int main() {
     scanf("%f", &num1);
     
     printf("Inserisci operatore (+, -, *, /): ");
-    scanf(" %c", &operatore);  // Spazio prima di %c
+    scanf(" %c", &operatore);
     
     printf("Inserisci secondo numero: ");
     scanf("%f", &num2);
@@ -1342,7 +1366,7 @@ int main() {
 }
 ```
 
-**4.5** Calcolo prestito bancario (rata mensile):
+**4.5** Calcolo prestito bancario:
 
 ```c
 #include <stdio.h>
@@ -1498,12 +1522,12 @@ sizeof(struct esempio) = 12 byte (non 6!)
 
 **volatile:** Dice al compilatore di non ottimizzare.
 ```c
-volatile int sensor_value;  // Valore può cambiare esternamente
+volatile int sensor_value;
 ```
 
 **register:** Suggerisce di tenere in registro CPU (raramente usato oggi).
 ```c
-register int i;  // Ottimizzazione (compilatore decide)
+register int i;
 ```
 
 ### Tipi Fixed-Width (C99)
@@ -1513,84 +1537,13 @@ register int i;  // Ottimizzazione (compilatore decide)
 ```c
 #include <stdint.h>
 
-int8_t   x;  // Esattamente 8 bit
-int16_t  y;  // Esattamente 16 bit
-int32_t  z;  // Esattamente 32 bit
-int64_t  w;  // Esattamente 64 bit
+int8_t   x;
+int16_t  y;
+int32_t  z;
+int64_t  w;
 
-uint8_t  a;  // Unsigned 8 bit
-uint16_t b;  // Unsigned 16 bit
-```
-
-**Vantaggi:** Portabilità garantita (sempre stessa dimensione).
-
-### Literal Suffixes
-
-**Suffissi per costanti:**
-```c
-// Interi
-42       // int
-42L      // long
-42LL     // long long
-42U      // unsigned int
-42UL     // unsigned long
-
-// Float
-3.14     // double
-3.14f    // float
-3.14L    // long double
-
-// Esadecimali
-0xFF     // 255
-0xFFU    // 255 unsigned
-0xFFFFFFFFUL  // 4294967295 unsigned long
-```
-
-### Promozioni Integer
-
-**Integral Promotion:** char, short → int automaticamente.
-
-```c
-char a = 100, b = 3;
-char c = a + b;  // a e b promossi a int, poi risultato castato a char
-```
-
-**Perché?** CPU lavora meglio con int (dimensione nativa).
-
-### Strict Aliasing Rule
-
-**Regola:** Non accedere a memoria attraverso puntatori di tipo incompatibile.
-
-```c
-int i = 42;
-float *f = (float*)&i;  // VIOLAZIONE!
-printf("%f\n", *f);     // Undefined Behavior!
-```
-
-**Eccezione:** Puoi usare `char*` per accedere a qualsiasi tipo (byte access).
-
-### Type Punning (C99+)
-
-**Modo sicuro:** Usa union.
-
-```c
-union {
-    int i;
-    float f;
-} converter;
-
-converter.i = 42;
-printf("Come float: %f\n", converter.f);  // OK
-```
-
-### Literal Strings e Char Arrays
-
-```c
-char str1[] = "Hello";  // Array modificabile: {'H','e','l','l','o','\0'}
-char *str2 = "Hello";   // Puntatore a literal (NON modificabile)
-
-str1[0] = 'h';  // OK
-str2[0] = 'h';  // UNDEFINED BEHAVIOR! (crash probabile)
+uint8_t  a;
+uint16_t b;
 ```
 
 ---
@@ -1599,9 +1552,9 @@ str2[0] = 'h';  // UNDEFINED BEHAVIOR! (crash probabile)
 
 ### Dichiarazione Variabili
 ```c
-tipo nome;                 // Dichiarazione
-tipo nome = valore;        // Inizializzazione
-const tipo nome = valore;  // Costante
+tipo nome;
+tipo nome = valore;
+const tipo nome = valore;
 ```
 
 ### Tipi Fondamentali
@@ -1614,14 +1567,14 @@ Booleano: _Bool / bool (C99+)
 
 ### Input/Output
 ```c
-printf("formato", args);   // Output
-scanf("formato", &var);    // Input (nota &)
+printf("formato", args);
+scanf("formato", &var);
 ```
 
 ### Conversioni
 ```c
-(tipo)espressione          // Cast esplicito
-tipo var = espressione;    // Conversione implicita
+(tipo)espressione
+tipo var = espressione;
 ```
 
 ### Operatori Base
@@ -1685,7 +1638,7 @@ printf("%d\n", x);  // Garbage!
 int x = 0;
 ```
 
-### Problema 2: Scanf senza &
+### Problema 2: scanf senza &
 
 ```c
 int x;
@@ -1694,19 +1647,19 @@ scanf("%d", x);  // ERRORE! Manca &
 
 **Soluzione:**
 ```c
-scanf("%d", &x);  // Corretto
+scanf("%d", &x);
 ```
 
 ### Problema 3: Float con scanf
 
 ```c
 double d;
-scanf("%f", &d);  // ERRORE! float usa %f, double usa %lf
+scanf("%f", &d);  // ERRORE! double usa %lf
 ```
 
 **Soluzione:**
 ```c
-scanf("%lf", &d);  // Corretto per double
+scanf("%lf", &d);
 ```
 
 ### Problema 4: Divisione intera
@@ -1718,7 +1671,7 @@ float r = a / b;  // r = 2.0 (non 2.5!)
 
 **Soluzione:**
 ```c
-float r = (float)a / b;  // r = 2.5
+float r = (float)a / b;
 ```
 
 ### Problema 5: Overflow silenzioso
@@ -1728,7 +1681,7 @@ int big = 2000000000;
 int bigger = big + 1000000000;  // Overflow!
 ```
 
-**Soluzione:** Usa tipo più grande o controlla limiti.
+**Soluzione:** Usa tipo più grande.
 ```c
 long long bigger = (long long)big + 1000000000;
 ```
@@ -1770,55 +1723,4 @@ Porta con te:
 
 **Ottimo lavoro! Ora sai usare variabili e input! 🎯**
 
-Nelle prossime lezioni aggiungeremo operatori ed espressioni per creare calcoli complessi, poi passeremo ai costrutti di controllo (if, while, for) per programmi veramente potenti! &temperatura);
-    
-    printf("Distanza percorsa (km): ");
-    scanf("%lf", &distanza);  // Nota: %lf per double!
-    
-    printf("\nRiepilogo:\n");
-    printf("Temperatura: %.1f°C\n", temperatura);
-    printf("Distanza: %.2f km\n", distanza);
-    
-    if (temperatura > 37.5) {
-        printf("Attenzione: febbre!\n");
-    }
-    
-    return 0;
-}
-```
-
-**2.4** Input carattere (con problema e soluzione):
-
-```c
-#include <stdio.h>
-
-int main() {
-    int numero;
-    char lettera;
-    
-    printf("Inserisci un numero: ");
-    scanf("%d", &numero);
-    
-    // PROBLEMA: scanf lascia '\n' nel buffer
-    printf("Inserisci una lettera: ");
-    scanf(" %c", &lettera);  // SOLUZIONE: spazio prima di %c
-    
-    printf("\nHai inserito:\n");
-    printf("Numero: %d\n", numero);
-    printf("Lettera: %c\n", lettera);
-    
-    return 0;
-}
-```
-
-**2.5** Calcolo IMC (Indice Massa Corporea):
-
-```c
-#include <stdio.h>
-
-int main() {
-    float peso, altezza, imc;
-    
-    printf("=== CALCOLO IMC ===\n");
-    printf("Inserisci peso (kg): ");
-    scanf("%f",
+Nelle prossime lezioni aggiungeremo operatori ed espressioni per creare calcoli complessi, poi passeremo ai costrutti di controllo (if, while, for) per programmi veramente potenti!
